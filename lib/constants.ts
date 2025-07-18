@@ -56,3 +56,9 @@ export const LOCATIONS: Record<AllowedLocations, { lat: number; lon: number; tz:
     tz: "Australia/Sydney",
   },
 } as const;
+
+export const ROUTEPARAM_TO_METRIC:Record<AllowedRoutes,string> = {
+   "temperature": "temperature_2m",
+   "windspeed":"wind_speed_10m",
+   "precipitation": "precipitation"
+}

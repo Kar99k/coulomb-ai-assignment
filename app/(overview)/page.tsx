@@ -21,9 +21,16 @@ export default function Home() {
 
   const router = useRouter();
   
-  function handleRoute(routeTo:string){
-      router.push(`/${routeTo}`)
-  }
+   function handleRoute(metrics:string) {
+   const params = new URLSearchParams({
+      location: location,
+      start_date: startDate,
+      end_date: endDate,
+      metrics: metrics,
+   });
+
+      router.push(`/detailedView?${params.toString()}`);
+   }
 
   useEffect(()=>{
       
@@ -35,7 +42,7 @@ export default function Home() {
             end_date: endDate,
             timezone: LOCATIONS[location].tz,
             dailyMetrics: [
-                "temperature_2m_mean",
+                "apparent_temperature_mean",
                 "temperature_2m_max",
                 "temperature_2m_min",
                 "precipitation_sum",
@@ -71,7 +78,7 @@ export default function Home() {
                </div>         
             </div>
             <div className="grid grid-cols-2 gap-[24px]">
-              <div className="bg-white p-4 cursor-pointer rounded-2xl border border-[#E9EFF5] backdrop-blur-2xl min-h-[486px]" onClick={()=>handleRoute("temperature")}>
+              <div className="bg-white p-4 cursor-pointer rounded-2xl border border-[#E9EFF5] backdrop-blur-2xl min-h-[486px]" onClick={()=>handleRoute("temperature_2m")}>
                  <div className="flex items-center">
                       <ThermometerIcon width={24} height={24}/>
                       <div className="font-semibold text-xl">Temperature</div>
@@ -108,7 +115,7 @@ export default function Home() {
                 
               </div>
 
-              <div className="bg-white p-4 cursor-pointer rounded-2xl border border-[#E9EFF5] backdrop-blur-2xl min-h-[486px]" onClick={()=>handleRoute("windspeed")}>
+              <div className="bg-white p-4 cursor-pointer rounded-2xl border border-[#E9EFF5] backdrop-blur-2xl min-h-[486px]" onClick={()=>handleRoute("wind_speed_10m")}>
                  <div className="flex items-center">
                       <WindIcon width={24} height={24}/>
                       <div className="font-semibold text-xl">Wind Speed</div>

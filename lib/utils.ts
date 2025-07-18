@@ -48,7 +48,7 @@ export function extractChartConfigByDailyMetric(
 
 export function extractChartConfigByHourlyMetric(
   data: typeof multi_metrics,
-  multi_metric:string[]=['temperature_2m','wind_speed_10m']
+  multi_metric:string[]
 ):HourlyMetricsChart{
 
   const BulkMetricData = data?.hourly as Record<string, any>;
@@ -63,7 +63,7 @@ export function extractChartConfigByHourlyMetric(
     series.push({
         name,
         data: seriesData,
-        type: METRICS_CHART_TYPE[metric] ?? "line",
+        type: METRICS_CHART_TYPE[metric] ?? "spline",
         tooltip: {
            valueSuffix: data.hourly_units[metric as keyof typeof data.hourly_units]
         },
