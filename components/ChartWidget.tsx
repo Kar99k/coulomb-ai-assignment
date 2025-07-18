@@ -7,6 +7,10 @@ const ChartWidget: React.FC<{data:TempLineChart | WindLineChart}> = ({data})=>{
         chart: {
             type: data.type
         },
+         boost: {
+            useGPUTranslations: true,
+            usePreAllocated: true
+         },
         title: {
             text: ''
         },
