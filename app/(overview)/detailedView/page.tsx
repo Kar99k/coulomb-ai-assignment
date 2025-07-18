@@ -5,7 +5,7 @@ import HourlyChart from "@/components/HourlyChart"
 import MultiSelectDropdown from "@/components/MultiSelectDropdown"
 import Spinner from "@/components/Spinner"
 import { getAllDailyMetrics } from "@/lib/api"
-import { LOCATIONS } from "@/lib/constants"
+import { LOCATIONS, METRICS_LABEL } from "@/lib/constants"
 import { extractChartConfigByHourlyMetric } from "@/lib/utils"
 import { useParams, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
@@ -75,6 +75,7 @@ export default function DetailedView(){
                             options={metricsOptions}
                             selected={metrics}
                             onSelect={setMetrics}
+                            getLabel={(metric) => METRICS_LABEL[metric]}
                             />
                      </div>
                      {chartData ? (

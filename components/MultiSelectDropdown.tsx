@@ -1,4 +1,3 @@
-import { LABEL_TO_HOURLY_METRICS } from "@/lib/constants";
 import { useState } from "react";
 
 type MultiSelectDropdownProps<T extends string> = {
@@ -6,30 +5,28 @@ type MultiSelectDropdownProps<T extends string> = {
   selected: T[];
   onSelect: (val: T[]) => void;
   maxSelect?: number;
+  getLabel?: (val: T) => string;
 };
 
-function MultiSelectDropdown<T extends string>({
+export default function MultiSelectDropdown<T extends string>({
   options,
   selected,
   onSelect,
   maxSelect = 2,
+  getLabel = (val) => val
 }: MultiSelectDropdownProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSelect = (value: T) => {
-  const isSelected = selected.includes(value);
+    const isSelected = selected.includes(value);
+    if (isSelected && selected.length > 1) {
+      onSelect(selected.filter((item) => item !== value));
+    } else if (!isSelected && selected.length < maxSelect) {
+      onSelect([...selected, value]);
+    }
+  };
 
-  if (isSelected) {
-    if (selected.length === 1) return;
-
-    onSelect(selected.filter((item) => item !== value));
-  } else if (selected.length < maxSelect) {
-    onSelect([...selected, value]);
-  }
-};
-
-  const displayLabel =
-    selected.length === 0 ? "Select up to 2" : selected.join(", ");
+  const displayLabel = selected.map(getLabel).join(", ") || "Select up to 2";
 
   return (
     <div className="relative inline-block text-left">
@@ -53,7 +50,6 @@ function MultiSelectDropdown<T extends string>({
           {options.map((option) => {
             const isChecked = selected.includes(option);
             const disabled = !isChecked && selected.length >= maxSelect;
-
             return (
               <li
                 key={option}
@@ -69,7 +65,7 @@ function MultiSelectDropdown<T extends string>({
                   className="mr-2"
                   disabled={disabled}
                 />
-                {option}
+                {getLabel(option)}
               </li>
             );
           })}
@@ -78,5 +74,3 @@ function MultiSelectDropdown<T extends string>({
     </div>
   );
 }
-
-export default MultiSelectDropdown;
