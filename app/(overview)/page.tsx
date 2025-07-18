@@ -7,12 +7,17 @@ import {CloudHailIcon, ThermometerIcon, WindIcon} from 'lucide-react'
 import { extractChartConfigByDailyMetric } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import Spinner from "@/components/Spinner";
+import { getAllDailyMetrics } from "@/lib/api";
+import { LOCATIONS } from "@/lib/constants";
 
 export default function Home() {
 
   const [tempdata,settempData] = useState<TempLineChart>()
   const [windData, setwindData] = useState<WindLineChart>()
   const [preciData,setPreciData] = useState<PreciBarChart>()
+  const [startDate,setStartDate] = useState('2025-07-02')
+  const [endDate,setEndDate] = useState('2025-07-16')
+  const [location,setLocation] = useState<AllowedLocations>('India')
 
   const router = useRouter();
   
@@ -21,15 +26,38 @@ export default function Home() {
   }
 
   useEffect(()=>{
-     const {TempChartConfig,PreciChartConfig,WindChartConfig} = extractChartConfigByDailyMetric(batch_widget_metrics, "daily", {
-      Temperature: ['temperature_2m_max','temperature_2m_min','apparent_temperature_max'],
-      Precipitation: ['precipitation_sum'],
-      WindSpeed: ['wind_speed_10m_max']
-      });
       
-      settempData(TempChartConfig)
-      setPreciData(PreciChartConfig)
-      setwindData(WindChartConfig)
+   const fetchAllDailyMetrics = async () =>{
+          const result = await getAllDailyMetrics({
+            lat: LOCATIONS[location].lat,
+            lon: LOCATIONS[location].lon,
+            start_date: startDate,
+            end_date: endDate,
+            timezone: LOCATIONS[location].tz,
+            dailyMetrics: [
+                "temperature_2m_mean",
+                "temperature_2m_max",
+                "temperature_2m_min",
+                "precipitation_sum",
+                "wind_speed_10m_max"
+            ]
+            });
+
+          const {TempChartConfig,PreciChartConfig,WindChartConfig} = extractChartConfigByDailyMetric(result, "daily", {
+            Temperature: ['temperature_2m_max','temperature_2m_min','apparent_temperature_max'],
+            Precipitation: ['precipitation_sum'],
+            WindSpeed: ['wind_speed_10m_max']
+            });
+      
+         settempData(TempChartConfig)
+         setPreciData(PreciChartConfig)
+         setwindData(WindChartConfig)
+
+        
+      }
+
+      fetchAllDailyMetrics()
+
   },[])
 
   return (

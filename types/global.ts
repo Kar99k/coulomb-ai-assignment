@@ -2,6 +2,8 @@ export {};
 
 declare global {
 
+    type AllowedLocations = "India" | "China" | "USA" | "UK" | "Japan" | "Australia" ;
+
     type DailyMetricCategory = {
     Temperature: string[],
     Precipitation: string[],

@@ -12,7 +12,7 @@ export default function DetailedView(){
     const [tempdata,settempData] = useState<HourlyMetricsChart>()
 
     useEffect(()=>{
-         settempData(extractChartConfigByHourlyMetric(multi_metrics))
+         settempData(extractChartConfigByHourlyMetric(multi_metrics))         
       },[])
 
     return (
