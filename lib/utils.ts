@@ -3,10 +3,9 @@ import { METRICS_LABEL, METRICS_CHART_TYPE } from "@/lib/constants";
 
 export function extractChartConfigByDailyMetric(
   data:typeof batch_widget_metrics,
-  intervals:string,
   { Temperature = [], Precipitation = [], WindSpeed = [] }: DailyMetricCategory) {
 
-  const BulkMetricData = data[intervals as keyof typeof data] as Record<string, any>;
+  const BulkMetricData = data.daily as Record<string, any>;
   const time = BulkMetricData.time;
   
   const createSeries = (metrics: string[],title:string) => {

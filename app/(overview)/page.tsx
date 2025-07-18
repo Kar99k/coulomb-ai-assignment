@@ -50,7 +50,7 @@ export default function Home() {
             ]
             });
 
-          const {TempChartConfig,PreciChartConfig,WindChartConfig} = extractChartConfigByDailyMetric(result, "daily", {
+          const {TempChartConfig,PreciChartConfig,WindChartConfig} = extractChartConfigByDailyMetric(result, {
             Temperature: ['temperature_2m_max','temperature_2m_min','apparent_temperature_mean'],
             Precipitation: ['precipitation_sum'],
             WindSpeed: ['wind_speed_10m_max']
