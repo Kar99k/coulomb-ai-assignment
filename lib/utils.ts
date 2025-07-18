@@ -40,7 +40,7 @@ export function extractChartConfigByDailyMetric(
     type:"spline",
     xAxis:time,
     unit: WindSpeed.map(m => data.daily_units?.[m as keyof typeof data.daily_units])[0],
-    series: createSeries(Precipitation,"WindSpeed")
+    series: createSeries(WindSpeed,"WindSpeed")
   };
 
   return { TempChartConfig,PreciChartConfig,WindChartConfig }
