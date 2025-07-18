@@ -1,8 +1,7 @@
 import { batch_widget_metrics, hourly_temp, multi_metrics, preci_data_for_india, temp_data_for_india, wind_data_for_india } from "@/test/data";
 import { METRICS_LABEL, METRICS_CHART_TYPE } from "@/types/global";
-import { title } from "process";
 
-export function extractChartConfigByMetric(
+export function extractChartConfigByDailyMetric(
   data:typeof batch_widget_metrics,
   intervals:string,
   { Temperature = [], Precipitation = [], WindSpeed = [] }: DailyMetricCategory) {
@@ -44,43 +43,49 @@ export function extractChartConfigByMetric(
     series: createSeries(Precipitation,"WindSpeed")
   };
 
-
-  console.log("Temp", TempChartConfig)
-  console.log("Preci",PreciChartConfig)
-  console.log("Wind",WindChartConfig)
   return { TempChartConfig,PreciChartConfig,WindChartConfig }
 }
 
-export function convertTohourlyMetricsChart(data: typeof hourly_temp | typeof multi_metrics,title:string):HourlyMetricsChart{
-   const {time} = data.hourly
-   let series:DataSeries[] = []
-   let yAxis:any = []
-   const metrics = Object.keys(data.hourly).filter((k) => k !== "time");
+export function extractChartConfigByHourlyMetric(
+  data: typeof multi_metrics,
+  multi_metric:string[]=['temperature_2m','wind_speed_10m']
+):HourlyMetricsChart{
 
-   metrics.forEach((metric, index) => {
-    
+  const BulkMetricData = data?.hourly as Record<string, any>;
+  const time:string[] = BulkMetricData.time;
+  let series:DataSeries[] = [];
+  let yAxis:any = []
+  let title:string[] = []
+
+  const buildConfig = (metric: string,index:number) => {
+    const seriesData = BulkMetricData[metric];
+    const name = METRICS_LABEL[metric] ?? metric;
     series.push({
-      name: METRICS_LABEL[metric] ?? metric,
-      data: data.hourly[metric as keyof typeof data.hourly] as number[],
-      type: METRICS_CHART_TYPE[metric] ?? "line",
-      tooltip: {
-        valueSuffix: data.hourly_units[metric as keyof typeof data.hourly_units]
-      },
-      yAxis: index,
-    });
+        name,
+        data: seriesData,
+        type: METRICS_CHART_TYPE[metric] ?? "line",
+        tooltip: {
+           valueSuffix: data.hourly_units[metric as keyof typeof data.hourly_units]
+        },
+        yAxis: index
+      });
 
     yAxis.push({
       title: { text: METRICS_LABEL[metric] ?? metric },
       opposite: index === 1,
-    });
+    })
 
-  });
+    title.push(name) 
+
+  };
+
+
+  multi_metric.forEach((metric,index)=>buildConfig(metric,index))
 
   return {
     yAxis,
-    title: title,
+    title: title.join(","),
     xAxis: time,
     series
   };
 }
-

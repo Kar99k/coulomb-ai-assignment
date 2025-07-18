@@ -1,7 +1,8 @@
 "use client"
 
 import HourlyChart from "@/components/HourlyChart"
-import { convertTohourlyMetricsChart, convertToTempLineChart } from "@/lib/utils"
+import Spinner from "@/components/Spinner"
+import { extractChartConfigByHourlyMetric } from "@/lib/utils"
 import { hourly_temp, multi_metrics } from "@/test/data"
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
@@ -11,10 +12,9 @@ export default function DetailedView(){
     const [tempdata,settempData] = useState<HourlyMetricsChart>()
 
     useEffect(()=>{
-         settempData(convertTohourlyMetricsChart(multi_metrics,"Temperature"))
+         settempData(extractChartConfigByHourlyMetric(multi_metrics))
       },[])
 
-      console.log(tempdata)
     return (
         <div className="p-6 flex flex-col w-dvw gap-6 bg-background">
             <div className="text-2xl font-medium">Drilldown</div>
@@ -30,9 +30,15 @@ export default function DetailedView(){
                      <div className="flex items-center">
                             <div className="font-semibold text-xl">Temperature</div>
                      </div>
+                     {tempdata ? (
                      <div className="mt-6">
-                     {tempdata && <HourlyChart data={tempdata}/>}
-                  </div>
+                        <HourlyChart data={tempdata} />
+                     </div>
+                     ) : (
+                     <div className="min-h-[400px] flex items-center justify-center">
+                        <Spinner />
+                     </div>
+                  )}
                 </div>
 
             </div>

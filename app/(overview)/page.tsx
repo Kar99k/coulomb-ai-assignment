@@ -4,7 +4,7 @@ import ChartWidget from "@/components/ChartWidget";
 import { batch_widget_metrics } from "@/test/data";
 import { useEffect, useState } from "react";
 import {CloudHailIcon, ThermometerIcon, WindIcon} from 'lucide-react'
-import { extractChartConfigByMetric } from "@/lib/utils";
+import { extractChartConfigByDailyMetric } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import Spinner from "@/components/Spinner";
 
@@ -21,7 +21,7 @@ export default function Home() {
   }
 
   useEffect(()=>{
-     const {TempChartConfig,PreciChartConfig,WindChartConfig} = extractChartConfigByMetric(batch_widget_metrics, "daily", {
+     const {TempChartConfig,PreciChartConfig,WindChartConfig} = extractChartConfigByDailyMetric(batch_widget_metrics, "daily", {
       Temperature: ['temperature_2m_max','temperature_2m_min','apparent_temperature_max'],
       Precipitation: ['precipitation_sum'],
       WindSpeed: ['wind_speed_10m_max']
