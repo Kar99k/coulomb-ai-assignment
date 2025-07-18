@@ -4,9 +4,11 @@ declare global {
 
     type DataSeries = {
         name: string
+        type?:string
         data: number[]
     }
-    interface TempLineChart {
+
+    interface BaseChart {
         type: string
         title: string
         xAxis: string[]
@@ -14,7 +16,8 @@ declare global {
         series: DataSeries[]
     }
 
-    interface WindLineChart extends TempLineChart{}
-    interface PreciBarChart extends TempLineChart{}
-
+    interface TempLineChart extends BaseChart{}
+    interface WindLineChart extends BaseChart{}
+    interface PreciBarChart extends BaseChart{}
+    interface HourlyMetricsChart extends Omit<BaseChart, 'type'>{}
 }

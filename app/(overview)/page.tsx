@@ -30,11 +30,10 @@ export default function Home() {
         <div className="text-2xl font-medium">Overview</div>
 
         <div className="flex flex-col gap-2">
-           <div className="h-12"> 
-             <div className="">
-              Filter Section
-             </div>
-                           
+           <div className="h-12">
+               <div className="">
+               Filter Section
+               </div>         
             </div>
             <div className="grid grid-cols-2 gap-[24px]">
               <div className="bg-white p-4 cursor-pointer rounded-2xl border border-[#E9EFF5] backdrop-blur-2xl" onClick={()=>handleRoute("temperature")}>

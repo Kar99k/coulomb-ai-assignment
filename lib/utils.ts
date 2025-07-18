@@ -1,4 +1,4 @@
-import { preci_data_for_india, temp_data_for_india, wind_data_for_india } from "@/test/testingData";
+import { hourly_temp, preci_data_for_india, temp_data_for_india, wind_data_for_india } from "@/test/testingData";
 
 export function convertToTempLineChart(data:typeof temp_data_for_india,title:string): TempLineChart{
 
@@ -61,6 +61,24 @@ export function converToPreciBarChart(data: typeof preci_data_for_india,title:st
       {
         name: 'Precipitation',
         data: precipitation_sum
+      }
+    ],
+  };
+}
+
+export function convertTohourlyMetricsChart(data: typeof hourly_temp,title:string):HourlyMetricsChart{
+   const {time,temperature_2m} = data.hourly
+   const unit = data.hourly_units.temperature_2m
+   
+
+  return {
+    title: title,
+    xAxis: time,
+    unit,
+    series: [
+      {
+        name: 'Temperature',
+        data: temperature_2m
       }
     ],
   };
