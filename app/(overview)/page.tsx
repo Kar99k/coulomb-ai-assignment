@@ -1,7 +1,7 @@
 "use client"
 
 import ChartWidget from "@/components/ChartWidget";
-import { preci_data_for_india, temp_data_for_india, wind_data_for_india } from "@/test/testingData";
+import { preci_data_for_india, temp_data_for_india, wind_data_for_india } from "@/test/data";
 import { useEffect, useState } from "react";
 import {CloudHailIcon, ThermometerIcon, WindIcon} from 'lucide-react'
 import { converToPreciBarChart, convertToTempLineChart, convertToWindLineChart } from "@/lib/utils";

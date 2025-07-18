@@ -2,7 +2,7 @@
 
 import HourlyChart from "@/components/HourlyChart"
 import { convertTohourlyMetricsChart, convertToTempLineChart } from "@/lib/utils"
-import { hourly_temp } from "@/test/testingData"
+import { hourly_temp } from "@/test/data"
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
 

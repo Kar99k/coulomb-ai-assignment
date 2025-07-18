@@ -1,4 +1,4 @@
-import { hourly_temp, preci_data_for_india, temp_data_for_india, wind_data_for_india } from "@/test/testingData";
+import { hourly_temp, preci_data_for_india, temp_data_for_india, wind_data_for_india } from "@/test/data";
 
 export function convertToTempLineChart(data:typeof temp_data_for_india,title:string): TempLineChart{
 
