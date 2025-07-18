@@ -1,7 +1,6 @@
 "use client"
 
 import ChartWidget from "@/components/ChartWidget";
-import { batch_widget_metrics } from "@/test/data";
 import { useEffect, useState } from "react";
 import {CloudHailIcon, ThermometerIcon, WindIcon} from 'lucide-react'
 import { extractChartConfigByDailyMetric } from "@/lib/utils";

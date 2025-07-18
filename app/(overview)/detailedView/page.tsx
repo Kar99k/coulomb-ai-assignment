@@ -1,17 +1,22 @@
 "use client"
 
+import Dropdown from "@/components/DropDown"
 import HourlyChart from "@/components/HourlyChart"
+import MultiSelectDropdown from "@/components/MultiSelectDropdown"
 import Spinner from "@/components/Spinner"
 import { getAllDailyMetrics } from "@/lib/api"
-import { LOCATIONS, ROUTEPARAM_TO_METRIC } from "@/lib/constants"
+import { LOCATIONS } from "@/lib/constants"
 import { extractChartConfigByHourlyMetric } from "@/lib/utils"
-import { hourly_temp, multi_metrics } from "@/test/data"
 import { useParams, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 
 export default function DetailedView(){
     
     const searchParams = useSearchParams();
+
+    const options:AllowedLocations[] = ["India", "USA", "UK", "Japan","Australia","China"];
+    const metricsOptions:AllowedMetrics[] = ["temperature_2m",  "relative_humidity_2m",  "apparent_temperature",  "precipitation",  "pressure_msl",  "wind_speed_10m"];
+
 
     const locationParam = searchParams.get('location') ?? '';
     const metricsParam = searchParams.get('metrics') ?? '';
@@ -25,8 +30,8 @@ export default function DetailedView(){
         to: searchParams.get('end_date') ?? ''
     })
 
-    const [metrics, setMetrics] = useState(
-    metricsParam.split(',').map(m => m.trim()).filter(Boolean)
+    const [metrics, setMetrics] = useState<AllowedMetrics[]>(
+    metricsParam.split(",").map((m) => m.trim() as AllowedMetrics)
     );
 
     const [chartData, setChartData] = useState<HourlyMetricsChart>();
@@ -55,13 +60,22 @@ export default function DetailedView(){
             <div className="flex flex-col gap-2">
                 <div className="h-12">
                     <div>
-                        Filter Section
+                        <Dropdown
+                            options={options}
+                            selected={location}
+                            onSelect={setLocation}
+                        />
                     </div>
                 </div>
 
                 <div className="min-h-[332px] p-4 rounded-2xl border border-[#E9EFF5]">
-                     <div className="flex items-center">
-                            <div className="font-semibold text-xl">Temperature</div>
+                     <div className="flex items-center justify-between">
+                        <div className="font-semibold text-xl">Temperature</div>
+                            <MultiSelectDropdown<AllowedMetrics>
+                            options={metricsOptions}
+                            selected={metrics}
+                            onSelect={setMetrics}
+                            />
                      </div>
                      {chartData ? (
                      <div className="mt-6">
