@@ -20,12 +20,10 @@ export default function DetailedView(){
     locationParam in LOCATIONS ? (locationParam as AllowedLocations) : 'India'
     );
 
-    const [startDate, setStartDate] = useState(
-    searchParams.get('start_date') ?? '2025-07-02'
-    );
-    const [endDate, setEndDate] = useState(
-    searchParams.get('end_date') ?? '2025-07-16'
-    );
+    const [dateRange,setDateRange] = useState({
+        from: searchParams.get('start_date') ?? '',
+        to: searchParams.get('end_date') ?? ''
+    })
 
     const [metrics, setMetrics] = useState(
     metricsParam.split(',').map(m => m.trim()).filter(Boolean)
@@ -38,8 +36,8 @@ export default function DetailedView(){
         const result = await getAllDailyMetrics({
         lat: LOCATIONS[location].lat,
         lon: LOCATIONS[location].lon,
-        start_date: startDate,
-        end_date: endDate,
+        start_date: dateRange.from,
+        end_date: dateRange.to,
         timezone: LOCATIONS[location].tz,
         hourlyMetrics: metrics,
         });
@@ -48,7 +46,7 @@ export default function DetailedView(){
     };
 
     fetchData();
-    }, [location, startDate, endDate, metrics]);
+    }, [location, dateRange, metrics]);
 
     return (
         <div className="p-6 flex flex-col w-dvw gap-6 bg-background">

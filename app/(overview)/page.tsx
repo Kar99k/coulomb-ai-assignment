@@ -9,14 +9,19 @@ import { useRouter } from "next/navigation";
 import Spinner from "@/components/Spinner";
 import { getAllDailyMetrics } from "@/lib/api";
 import { LOCATIONS } from "@/lib/constants";
+import Dropdown from "@/components/DropDown";
 
 export default function Home() {
+  
+  const options:AllowedLocations[] = ["India", "USA", "UK", "Japan","Australia","China"];
 
   const [tempdata,settempData] = useState<TempLineChart>()
   const [windData, setwindData] = useState<WindLineChart>()
   const [preciData,setPreciData] = useState<PreciBarChart>()
-  const [startDate,setStartDate] = useState('2025-07-10')
-  const [endDate,setEndDate] = useState('2025-07-16')
+  const [dateRange,setDateRange] = useState({
+    from: '2025-07-10',
+    to: '2025-07-16'
+  })
   const [location,setLocation] = useState<AllowedLocations>('India')
 
   const router = useRouter();
@@ -24,8 +29,8 @@ export default function Home() {
    function handleRoute(metrics:string) {
    const params = new URLSearchParams({
       location: location,
-      start_date: startDate,
-      end_date: endDate,
+      start_date: dateRange.from,
+      end_date: dateRange.to,
       metrics: metrics,
    });
 
@@ -38,8 +43,8 @@ export default function Home() {
           const result = await getAllDailyMetrics({
             lat: LOCATIONS[location].lat,
             lon: LOCATIONS[location].lon,
-            start_date: startDate,
-            end_date: endDate,
+            start_date: dateRange.from,
+            end_date: dateRange.to,
             timezone: LOCATIONS[location].tz,
             dailyMetrics: [
                 "apparent_temperature_mean",
@@ -59,13 +64,11 @@ export default function Home() {
          settempData(TempChartConfig)
          setPreciData(PreciChartConfig)
          setwindData(WindChartConfig)
-
-        
       }
 
       fetchAllDailyMetrics()
 
-  },[])
+  },[location])
 
   return (
     <div className="p-6 flex flex-col gap-6 w-dvw bg-background">
@@ -74,7 +77,11 @@ export default function Home() {
         <div className="flex flex-col gap-2">
            <div className="h-12">
                <div className="">
-               Filter Section
+                 <Dropdown
+                  options={options}
+                  selected={location}
+                  onSelect={setLocation}
+                  />
                </div>         
             </div>
             <div className="grid grid-cols-2 gap-[24px]">
