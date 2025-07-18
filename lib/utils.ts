@@ -1,5 +1,5 @@
 import { batch_widget_metrics, hourly_temp, multi_metrics, preci_data_for_india, temp_data_for_india, wind_data_for_india } from "@/test/data";
-import { METRICS_LABEL, METRICS_CHART_TYPE } from "@/types/global";
+import { METRICS_LABEL, METRICS_CHART_TYPE } from "@/lib/constants";
 
 export function extractChartConfigByDailyMetric(
   data:typeof batch_widget_metrics,
