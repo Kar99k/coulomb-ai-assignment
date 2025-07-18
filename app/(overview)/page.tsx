@@ -15,7 +15,7 @@ export default function Home() {
   const [tempdata,settempData] = useState<TempLineChart>()
   const [windData, setwindData] = useState<WindLineChart>()
   const [preciData,setPreciData] = useState<PreciBarChart>()
-  const [startDate,setStartDate] = useState('2025-07-02')
+  const [startDate,setStartDate] = useState('2025-07-10')
   const [endDate,setEndDate] = useState('2025-07-16')
   const [location,setLocation] = useState<AllowedLocations>('India')
 
