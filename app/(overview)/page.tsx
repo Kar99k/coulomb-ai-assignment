@@ -1,11 +1,12 @@
 "use client"
 
 import ChartWidget from "@/components/ChartWidget";
-import { preci_data_for_india, temp_data_for_india, wind_data_for_india } from "@/test/data";
+import { batch_widget_metrics } from "@/test/data";
 import { useEffect, useState } from "react";
 import {CloudHailIcon, ThermometerIcon, WindIcon} from 'lucide-react'
-import { converToPreciBarChart, convertToTempLineChart, convertToWindLineChart } from "@/lib/utils";
+import { extractChartConfigByMetric } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import Spinner from "@/components/Spinner";
 
 export default function Home() {
 
@@ -20,9 +21,15 @@ export default function Home() {
   }
 
   useEffect(()=>{
-     settempData(convertToTempLineChart(temp_data_for_india,"Temperature"))
-     setwindData(convertToWindLineChart(wind_data_for_india,"Wind"))
-     setPreciData(converToPreciBarChart(preci_data_for_india,"Precipitation"))
+     const {TempChartConfig,PreciChartConfig,WindChartConfig} = extractChartConfigByMetric(batch_widget_metrics, "daily", {
+      Temperature: ['temperature_2m_max','temperature_2m_min','apparent_temperature_max'],
+      Precipitation: ['precipitation_sum'],
+      WindSpeed: ['wind_speed_10m_max']
+      });
+      
+      settempData(TempChartConfig)
+      setPreciData(PreciChartConfig)
+      setwindData(WindChartConfig)
   },[])
 
   return (
@@ -36,38 +43,58 @@ export default function Home() {
                </div>         
             </div>
             <div className="grid grid-cols-2 gap-[24px]">
-              <div className="bg-white p-4 cursor-pointer rounded-2xl border border-[#E9EFF5] backdrop-blur-2xl" onClick={()=>handleRoute("temperature")}>
+              <div className="bg-white p-4 cursor-pointer rounded-2xl border border-[#E9EFF5] backdrop-blur-2xl min-h-[486px]" onClick={()=>handleRoute("temperature")}>
                  <div className="flex items-center">
                       <ThermometerIcon width={24} height={24}/>
                       <div className="font-semibold text-xl">Temperature</div>
                  </div>
                  
-                  <div className="mt-6">
-                     {tempdata && <ChartWidget data={tempdata}/>}
-                  </div>
+                  {tempdata ? (
+                     <div className="mt-6">
+                        <ChartWidget data={tempdata} />
+                     </div>
+                     ) : (
+                     <div className="min-h-[400px] flex items-center justify-center">
+                        <Spinner />
+                     </div>
+                  )}
               </div>
 
-              <div className="bg-white p-4 cursor-pointer rounded-2xl border border-[#E9EFF5] backdrop-blur-2xl" onClick={()=>handleRoute("precipitation")}>
+              <div className="bg-white p-4 cursor-pointer rounded-2xl border border-[#E9EFF5] backdrop-blur-2xl min-h-[486px]" onClick={()=>handleRoute("precipitation")}>
                  <div className="flex items-center">
                       <CloudHailIcon width={24} height={24}/>
                       <div className="font-semibold text-xl">Precipitation</div>
                  </div>
                  
-                  <div className="mt-6">
-                     {preciData && <ChartWidget data={preciData}/>}
-                  </div>
+                  
+
+                  {preciData ? (
+                     <div className="mt-6">
+                        <ChartWidget data={preciData}/>
+                     </div>
+                     ) : (
+                     <div className="min-h-[400px] flex items-center justify-center">
+                        <Spinner />
+                     </div>
+                  )}
                 
               </div>
 
-              <div className="bg-white p-4 cursor-pointer rounded-2xl border border-[#E9EFF5] backdrop-blur-2xl" onClick={()=>handleRoute("windspeed")}>
+              <div className="bg-white p-4 cursor-pointer rounded-2xl border border-[#E9EFF5] backdrop-blur-2xl min-h-[486px]" onClick={()=>handleRoute("windspeed")}>
                  <div className="flex items-center">
                       <WindIcon width={24} height={24}/>
                       <div className="font-semibold text-xl">Wind Speed</div>
                  </div>
                  
-                  <div className="mt-6">
-                     {windData && <ChartWidget data={windData}/>}
-                  </div>
+                  {windData ? (
+                     <div className="mt-6">
+                        <ChartWidget data={windData}/>
+                     </div>
+                     ) : (
+                     <div className="min-h-[400px] flex items-center justify-center">
+                        <Spinner />
+                     </div>
+                  )}
                 
               </div>
             </div>

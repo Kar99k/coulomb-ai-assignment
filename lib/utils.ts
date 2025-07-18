@@ -1,70 +1,54 @@
-import { hourly_temp, multi_metrics, preci_data_for_india, temp_data_for_india, wind_data_for_india } from "@/test/data";
-import { HOURLY_METRICS_LABEL, METRICS_CHART_TYPE } from "@/types/global";
+import { batch_widget_metrics, hourly_temp, multi_metrics, preci_data_for_india, temp_data_for_india, wind_data_for_india } from "@/test/data";
+import { METRICS_LABEL, METRICS_CHART_TYPE } from "@/types/global";
+import { title } from "process";
 
-export function convertToTempLineChart(data:typeof temp_data_for_india,title:string): TempLineChart{
+export function extractChartConfigByMetric(
+  data:typeof batch_widget_metrics,
+  intervals:string,
+  { Temperature = [], Precipitation = [], WindSpeed = [] }: DailyMetricCategory) {
 
-  const { time, temperature_2m_max, temperature_2m_min, apparent_temperature_mean } = data.daily;
-  const unit = data.daily_units.apparent_temperature_mean;
-  const type = 'line'
-
-  return {
-    type,
-    title: title,
-    xAxis: time,
-    unit,
-    series: [
-      {
-        name: 'Average Temperature',
-        data: apparent_temperature_mean
-      },
-      {
-        name: 'Maximum Temperature',
-        data: temperature_2m_max
-      },
-      {
-        name: 'Minimum Temperature',
-        data:  temperature_2m_min
-      },
-    ],
+  const BulkMetricData = data[intervals as keyof typeof data] as Record<string, any>;
+  const time = BulkMetricData.time;
+  
+  const createSeries = (metrics: string[],title:string) => {
+    return metrics?.map(metric => {
+      const seriesData = BulkMetricData[metric];
+      return {
+        name: metric,
+        data: seriesData
+      };
+    });
   };
-}
 
-export function convertToWindLineChart(data: typeof wind_data_for_india,title:string): WindLineChart{
-  const { time, wind_speed_10m_max} = data.daily;
-  const unit = data.daily_units.wind_speed_10m_max;
-  const type = 'line'
-
-  return {
-    type,
-    title: title,
+  const TempChartConfig = {
+    title: "Temperature",
+    type:"spline",
     xAxis: time,
-    unit,
-    series: [
-      {
-        name: 'Wind Speed',
-        data: wind_speed_10m_max
-      }
-    ],
+    unit: Temperature.map(m => data.daily_units?.[m as keyof typeof data.daily_units])[0],
+    series: createSeries(Temperature,"Temperature")
   };
-}
 
-export function converToPreciBarChart(data: typeof preci_data_for_india,title:string):PreciBarChart{
-  const { time, precipitation_sum} = data.daily;
-  const unit = data.daily_units.precipitation_sum;
-  const type = 'column'
-
-  return {
-    type,
-    title: title,
-    xAxis: time,
-    unit,
-    series: [
-      {
-        name: 'Precipitation',
-        data: precipitation_sum
-      }
-    ],
+  const PreciChartConfig = {
+    title:"Precipitation",
+    type:"column",
+    xAxis:time,
+    unit: Precipitation.map(m => data.daily_units?.[m as keyof typeof data.daily_units])[0],
+    series: createSeries(Precipitation,"Precipitation")
   };
+
+  const WindChartConfig = {
+    title:"WindSpeed",
+    type:"spline",
+    xAxis:time,
+    unit: WindSpeed.map(m => data.daily_units?.[m as keyof typeof data.daily_units])[0],
+    series: createSeries(Precipitation,"WindSpeed")
+  };
+
+
+  console.log("Temp", TempChartConfig)
+  console.log("Preci",PreciChartConfig)
+  console.log("Wind",WindChartConfig)
+  return { TempChartConfig,PreciChartConfig,WindChartConfig }
 }
 
 export function convertTohourlyMetricsChart(data: typeof hourly_temp | typeof multi_metrics,title:string):HourlyMetricsChart{
@@ -76,7 +60,7 @@ export function convertTohourlyMetricsChart(data: typeof hourly_temp | typeof mu
    metrics.forEach((metric, index) => {
     
     series.push({
-      name: HOURLY_METRICS_LABEL[metric] ?? metric,
+      name: METRICS_LABEL[metric] ?? metric,
       data: data.hourly[metric as keyof typeof data.hourly] as number[],
       type: METRICS_CHART_TYPE[metric] ?? "line",
       tooltip: {
@@ -86,7 +70,7 @@ export function convertTohourlyMetricsChart(data: typeof hourly_temp | typeof mu
     });
 
     yAxis.push({
-      title: { text: HOURLY_METRICS_LABEL[metric] ?? metric },
+      title: { text: METRICS_LABEL[metric] ?? metric },
       opposite: index === 1,
     });
 
