@@ -1,11 +1,11 @@
 import Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
 
-const SimpleLineChart: React.FC<{data:TempLineChart | WindLineChart}> = ({data})=>{
+const ChartWidget: React.FC<{data:TempLineChart | WindLineChart}> = ({data})=>{
     
      const options = {
         chart: {
-            type: 'line'
+            type: data.type
         },
         title: {
             text: ''
@@ -31,4 +31,4 @@ const SimpleLineChart: React.FC<{data:TempLineChart | WindLineChart}> = ({data})
     return <HighchartsReact highcharts={Highcharts} options={options}/>
 }
 
-export default SimpleLineChart
+export default ChartWidget

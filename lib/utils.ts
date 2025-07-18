@@ -1,11 +1,13 @@
-import { temp_data_for_india, wind_data_for_india } from "@/test/testingData";
+import { preci_data_for_india, temp_data_for_india, wind_data_for_india } from "@/test/testingData";
 
 export function convertToTempLineChart(data:typeof temp_data_for_india,title:string): TempLineChart{
 
   const { time, temperature_2m_max, temperature_2m_min, apparent_temperature_mean } = data.daily;
   const unit = data.daily_units.apparent_temperature_mean;
+  const type = 'line'
 
   return {
+    type,
     title: title,
     xAxis: time,
     unit,
@@ -29,8 +31,10 @@ export function convertToTempLineChart(data:typeof temp_data_for_india,title:str
 export function convertToWindLineChart(data: typeof wind_data_for_india,title:string): WindLineChart{
   const { time, wind_speed_10m_max} = data.daily;
   const unit = data.daily_units.wind_speed_10m_max;
+  const type = 'line'
 
   return {
+    type,
     title: title,
     xAxis: time,
     unit,
@@ -38,6 +42,25 @@ export function convertToWindLineChart(data: typeof wind_data_for_india,title:st
       {
         name: 'Wind Speed',
         data: wind_speed_10m_max
+      }
+    ],
+  };
+}
+
+export function converToPreciBarChart(data: typeof preci_data_for_india,title:string):PreciBarChart{
+  const { time, precipitation_sum} = data.daily;
+  const unit = data.daily_units.precipitation_sum;
+  const type = 'column'
+
+  return {
+    type,
+    title: title,
+    xAxis: time,
+    unit,
+    series: [
+      {
+        name: 'Precipitation',
+        data: precipitation_sum
       }
     ],
   };

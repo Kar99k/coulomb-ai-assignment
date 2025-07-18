@@ -1,19 +1,21 @@
 "use client"
 
-import SimpleLineChart from "@/components/LineChart";
-import { temp_data_for_india, wind_data_for_india } from "@/test/testingData";
+import ChartWidget from "@/components/ChartWidget";
+import { preci_data_for_india, temp_data_for_india, wind_data_for_india } from "@/test/testingData";
 import { useEffect, useState } from "react";
-import {ThermometerIcon, Wind} from 'lucide-react'
-import { convertToTempLineChart, convertToWindLineChart } from "@/lib/utils";
+import {CloudHailIcon, ThermometerIcon, WindIcon} from 'lucide-react'
+import { converToPreciBarChart, convertToTempLineChart, convertToWindLineChart } from "@/lib/utils";
 
 export default function Home() {
 
   const [tempdata,settempData] = useState<TempLineChart>()
   const [windData, setwindData] = useState<WindLineChart>()
+  const [preciData,setPreciData] = useState<PreciBarChart>()
 
   useEffect(()=>{
      settempData(convertToTempLineChart(temp_data_for_india,"Temperature"))
      setwindData(convertToWindLineChart(wind_data_for_india,"Wind"))
+     setPreciData(converToPreciBarChart(preci_data_for_india,"Precipitation"))
   },[])
 
   return (
@@ -36,19 +38,31 @@ export default function Home() {
                  </div>
                  
                   <div className="mt-6">
-                     {tempdata && <SimpleLineChart data={tempdata}/>}
+                     {tempdata && <ChartWidget data={tempdata}/>}
                   </div>
                 
               </div>
-              <div className="bg-gray-100 p-4 cursor-pointer">Chart 2</div>
+
               <div className="bg-white p-4 cursor-pointer rounded-2xl border border-[#E9EFF5] backdrop-blur-2xl">
                  <div className="flex items-center">
-                      <Wind width={24} height={24}/>
+                      <CloudHailIcon width={24} height={24}/>
+                      <div className="font-semibold text-xl">Precipitation</div>
+                 </div>
+                 
+                  <div className="mt-6">
+                     {preciData && <ChartWidget data={preciData}/>}
+                  </div>
+                
+              </div>
+
+              <div className="bg-white p-4 cursor-pointer rounded-2xl border border-[#E9EFF5] backdrop-blur-2xl">
+                 <div className="flex items-center">
+                      <WindIcon width={24} height={24}/>
                       <div className="font-semibold text-xl">Wind Speed</div>
                  </div>
                  
                   <div className="mt-6">
-                     {windData && <SimpleLineChart data={windData}/>}
+                     {windData && <ChartWidget data={windData}/>}
                   </div>
                 
               </div>
