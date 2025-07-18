@@ -2,7 +2,7 @@
 
 import HourlyChart from "@/components/HourlyChart"
 import { convertTohourlyMetricsChart, convertToTempLineChart } from "@/lib/utils"
-import { hourly_temp } from "@/test/data"
+import { hourly_temp, multi_metrics } from "@/test/data"
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
 
@@ -11,7 +11,7 @@ export default function DetailedView(){
     const [tempdata,settempData] = useState<HourlyMetricsChart>()
 
     useEffect(()=>{
-         settempData(convertTohourlyMetricsChart(hourly_temp,"Temperature"))
+         settempData(convertTohourlyMetricsChart(multi_metrics,"Temperature"))
       },[])
 
       console.log(tempdata)

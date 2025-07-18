@@ -1,4 +1,5 @@
-import { hourly_temp, preci_data_for_india, temp_data_for_india, wind_data_for_india } from "@/test/data";
+import { hourly_temp, multi_metrics, preci_data_for_india, temp_data_for_india, wind_data_for_india } from "@/test/data";
+import { HOURLY_METRICS_LABEL, METRICS_CHART_TYPE } from "@/types/global";
 
 export function convertToTempLineChart(data:typeof temp_data_for_india,title:string): TempLineChart{
 
@@ -66,20 +67,36 @@ export function converToPreciBarChart(data: typeof preci_data_for_india,title:st
   };
 }
 
-export function convertTohourlyMetricsChart(data: typeof hourly_temp,title:string):HourlyMetricsChart{
-   const {time,temperature_2m} = data.hourly
-   const unit = data.hourly_units.temperature_2m
-   
+export function convertTohourlyMetricsChart(data: typeof hourly_temp | typeof multi_metrics,title:string):HourlyMetricsChart{
+   const {time} = data.hourly
+   let series:DataSeries[] = []
+   let yAxis:any = []
+   const metrics = Object.keys(data.hourly).filter((k) => k !== "time");
+
+   metrics.forEach((metric, index) => {
+    
+    series.push({
+      name: HOURLY_METRICS_LABEL[metric] ?? metric,
+      data: data.hourly[metric as keyof typeof data.hourly] as number[],
+      type: METRICS_CHART_TYPE[metric] ?? "line",
+      tooltip: {
+        valueSuffix: data.hourly_units[metric as keyof typeof data.hourly_units]
+      },
+      yAxis: index,
+    });
+
+    yAxis.push({
+      title: { text: HOURLY_METRICS_LABEL[metric] ?? metric },
+      opposite: index === 1,
+    });
+
+  });
 
   return {
+    yAxis,
     title: title,
     xAxis: time,
-    unit,
-    series: [
-      {
-        name: 'Temperature',
-        data: temperature_2m
-      }
-    ],
+    series
   };
 }
+
