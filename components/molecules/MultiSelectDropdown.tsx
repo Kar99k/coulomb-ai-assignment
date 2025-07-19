@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Button from "../atom/Button";
+import Button from "../atoms/Button";
 import { ChevronDown } from "lucide-react";
 
 type MultiSelectDropdownProps<T extends string> = {

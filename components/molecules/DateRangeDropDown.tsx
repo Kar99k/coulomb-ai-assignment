@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { DayPicker, DateRange } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
-import Button from '../atom/Button';
+import Button from '../atoms/Button';
 import { format, parseISO } from 'date-fns';
 
 type Props = {

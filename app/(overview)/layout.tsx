@@ -1,6 +1,6 @@
 "use client"
-import Header from "@/components/molecule/Header";
-import SideBar from "@/components/molecule/SideBar";
+import Header from "@/components/molecules/Header";
+import SideBar from "@/components/molecules/SideBar";
 import { useState } from "react";
 
 export default function DashboardLayout({ children }: { children:React.ReactNode }) {

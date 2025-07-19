@@ -1,17 +1,17 @@
 "use client"
 
-import ChartWidget from "@/components/template/ChartWidget";
+import ChartWidget from "@/components/templates/ChartWidget";
 import { useEffect, useState } from "react";
 import {CloudHailIcon, MoveDown, ThermometerIcon, WindIcon} from 'lucide-react'
 import { extractChartConfigByDailyMetric, multiSelectCountries } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-import Spinner from "@/components/atom/Spinner";
+import Spinner from "@/components/atoms/Spinner";
 import { getAllMetricsbyParams } from "@/lib/api";
 import { LOCATIONS } from "@/lib/constants";
-import Dropdown from "@/components/atom/DropDown";
-import DateRangeDropDown from "@/components/molecule/DateRangeDropDown";
+import Dropdown from "@/components/atoms/DropDown";
+import DateRangeDropDown from "@/components/molecules/DateRangeDropDown";
 import { multi_countries } from "@/test/data";
-import MultiSelectDropdown from "@/components/molecule/MultiSelectDropdown";
+import MultiSelectDropdown from "@/components/molecules/MultiSelectDropdown";
 
 
 export default function Home() {
