@@ -1,47 +1,96 @@
-import { METRICS_LABEL, METRICS_CHART_TYPE } from "@/lib/constants";
+import { METRICS_LABEL, METRICS_CHART_TYPE, LOCATIONS } from "@/lib/constants";
+
+
+const TAILWIND_COLORS = [
+  '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6',
+  '#14b8a6', '#ec4899', '#f97316', '#22c55e', '#0ea5e9',
+];
 
 export function extractChartConfigByDailyMetric(
-  data:any,
-  { Temperature = [], Precipitation = [], WindSpeed = [] }: DailyMetricCategory) {
+  data: any | any[],
+  { Temperature = [], Precipitation = [], WindSpeed = [] }: DailyMetricCategory
+) {
+  const isArray = Array.isArray(data);
+  const dataArray = isArray ? data : [data];
+  const time = dataArray[0]?.daily?.time || [];
 
-  const BulkMetricData = data.daily as Record<string, any>;
-  const time = BulkMetricData.time;
-  
-  const createSeries = (metrics: string[],title:string) => {
-    return metrics?.map(metric => {
-      const seriesData = BulkMetricData[metric];
-      return {
-        name: metric,
-        data: seriesData
-      };
-    });
+  const getLocationMeta = (timezone: string) => {
+    for (const [name, meta] of Object.entries(LOCATIONS)) {
+      if (meta.tz === timezone) {
+        return { name, color: meta.color };
+      }
+    }
+    return { name: 'Unknown', color: '#999' };
   };
 
+  const usedColorMap = new Map<string, string>();
+  let colorIndex = 0;
+
+  const getColorFor = (location: string, metric: string) => {
+    const key = `${location}_${metric}`;
+    if (usedColorMap.has(key)) return usedColorMap.get(key)!;
+    const color = TAILWIND_COLORS[colorIndex % TAILWIND_COLORS.length];
+    usedColorMap.set(key, color);
+    colorIndex++;
+    return color;
+  };
+
+  const createSeries = (metrics: string[]) => {
+    const allSeries: { name: string; data: number[]; color?: string }[] = [];
+
+    dataArray.forEach((d) => {
+      const BulkMetricData = d.daily;
+      const { name: locationName } = getLocationMeta(d.timezone);
+
+      metrics.forEach((metric: string) => {
+        if (BulkMetricData[metric]) {
+          const label = METRICS_LABEL[metric as keyof typeof METRICS_LABEL] ?? metric;
+          const seriesItem: { name: string; data: number[]; color?: string } = {
+            name: `${locationName} - ${label}`,
+            data: BulkMetricData[metric],
+          };
+
+          if (isArray || metrics.length > 1) {
+            seriesItem.color = getColorFor(locationName, metric);
+          }
+
+          allSeries.push(seriesItem);
+        }
+      });
+    });
+
+    return allSeries;
+  };
+
+  const pickUnit = (metricList: string[], d: any) =>
+    metricList.map((m) => d.daily_units?.[m]).filter(Boolean)[0] || '';
+
   const TempChartConfig = {
-    title: "Temperature",
-    type:"spline",
+    title: 'Temperature',
+    type: 'spline',
     xAxis: time,
-    unit: Temperature.map(m => data.daily_units?.[m as keyof typeof data.daily_units])[0],
-    series: createSeries(Temperature,"Temperature")
+    unit: pickUnit(Temperature, dataArray[0]),
+    series: createSeries(Temperature),
   };
 
   const PreciChartConfig = {
-    title:"Precipitation",
-    type:"column",
-    xAxis:time,
-    unit: Precipitation.map(m => data.daily_units?.[m as keyof typeof data.daily_units])[0],
-    series: createSeries(Precipitation,"Precipitation")
+    title: 'Precipitation',
+    type: 'column',
+    xAxis: time,
+    unit: pickUnit(Precipitation, dataArray[0]),
+    series: createSeries(Precipitation),
   };
 
   const WindChartConfig = {
-    title:"WindSpeed",
-    type:"spline",
-    xAxis:time,
-    unit: WindSpeed.map(m => data.daily_units?.[m as keyof typeof data.daily_units])[0],
-    series: createSeries(WindSpeed,"WindSpeed")
+    title: 'Wind Speed',
+    type: 'spline',
+    xAxis: time,
+    unit: pickUnit(WindSpeed, dataArray[0]),
+    series: createSeries(WindSpeed),
   };
 
-  return { TempChartConfig,PreciChartConfig,WindChartConfig }
+  console.log({ TempChartConfig, PreciChartConfig, WindChartConfig });
+  return { TempChartConfig, PreciChartConfig, WindChartConfig };
 }
 
 export function extractChartConfigByHourlyMetric(
@@ -85,5 +134,23 @@ export function extractChartConfigByHourlyMetric(
     title: title.join(","),
     xAxis: time,
     series
+  };
+}
+
+export function multiSelectCountries(countries: (keyof typeof LOCATIONS)[]) {
+  const latitudes: string[] = [];
+  const longitudes: string[] = [];
+
+  countries.forEach((country) => {
+    const location = LOCATIONS[country];
+    if (location) {
+      latitudes.push(location.lat);
+      longitudes.push(location.lon);
+    }
+  });
+
+  return {
+    lat: latitudes.join(','),
+    lon: longitudes.join(','),
   };
 }
