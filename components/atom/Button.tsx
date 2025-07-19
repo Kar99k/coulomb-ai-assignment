@@ -4,7 +4,6 @@ import clsx from 'clsx';
 type ButtonProps = {
   children: React.ReactNode;
   onClick?: () => void;
-  rounded?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
   bgColor?: string;
   textColor?: string;
   className?: string;
@@ -24,7 +23,6 @@ const sizeClasses = {
 const Button: React.FC<ButtonProps> = ({
   children,
   onClick,
-  rounded = 'lg',
   bgColor = 'bg-white',
   textColor = 'text-black',
   className,
@@ -38,12 +36,11 @@ const Button: React.FC<ButtonProps> = ({
       type={type}
       onClick={onClick}
       className={clsx(
-        'flex justify-between items-center font-medium transition duration-200 hover:opacity-90 cursor-pointer border border-[#E7E7E7]',
+        'flex justify-between items-center font-medium transition duration-200 hover:opacity-90 cursor-pointer border border-[#E7E7E7] rounded-lg',
         icon? "justify-between":"justify-center",
         sizeClasses[size],
         bgColor,
         textColor,
-        `rounded-${rounded}`,
         className
       )}
     >

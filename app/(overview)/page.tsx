@@ -25,8 +25,6 @@ export default function Home() {
     from: '2025-07-10',
     to: '2025-07-16'
   })
-   const [selected, setSelected] = useState<DateRange>();
-
 
   const [location,setLocation] = useState<AllowedLocations>('India')
 
@@ -82,7 +80,7 @@ export default function Home() {
 
         <div className="flex flex-col gap-2">
            <div className="h-12">
-               <div className="flex  gap-4">
+               <div className="flex gap-4">
                   <DateRangeDropDown value={dateRange} onChange={setDateRange}/>
                  <Dropdown
                   options={options}

@@ -1,3 +1,15 @@
+
+export const Routes = {
+  Home:{
+    label:"Home",
+    path:"/"
+  },
+  DrilledDown:{
+    label:"Detailed View",
+    path:"/detailedView"
+  }
+} as const
+
 export const METRICS_LABEL = {
   temperature_2m: "Temperature",
   relative_humidity_2m: "Relative Humidity",

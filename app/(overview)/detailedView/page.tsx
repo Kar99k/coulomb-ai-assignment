@@ -1,8 +1,9 @@
 "use client"
 
-import Dropdown from "@/components/DropDown"
+import Dropdown from "@/components/atom/DropDown"
 import HourlyChart from "@/components/HourlyChart"
-import MultiSelectDropdown from "@/components/MultiSelectDropdown"
+import DateRangeDropDown from "@/components/molecule/DateRangeDropDown"
+import MultiSelectDropdown from "@/components/molecule/MultiSelectDropdown"
 import Spinner from "@/components/Spinner"
 import { getAllDailyMetrics } from "@/lib/api"
 import { LOCATIONS, METRICS_LABEL } from "@/lib/constants"
@@ -59,19 +60,26 @@ export default function DetailedView(){
 
             <div className="flex flex-col gap-2">
                 <div className="h-12">
-                    <div>
+                    <div className="flex gap-4">
+                     <DateRangeDropDown value={dateRange} onChange={setDateRange}/>
                         <Dropdown
                             options={options}
                             selected={location}
-                            onSelect={setLocation}
-                        />
+                            placeholder= {location || "All Cities Selected"}
+                            onSelect={(value) => {
+                                if (value in LOCATIONS) {
+                                    setLocation(value as AllowedLocations);
+                                }
+                            }}
+                            size="lg"
+                            />
                     </div>
                 </div>
 
                 <div className="min-h-[332px] p-4 rounded-2xl border border-[#E9EFF5]">
                      <div className="flex items-center justify-between">
                         <div className="font-semibold text-xl">Temperature</div>
-                            <MultiSelectDropdown<AllowedMetrics>
+                         <MultiSelectDropdown<AllowedMetrics>
                             options={metricsOptions}
                             selected={metrics}
                             onSelect={setMetrics}
