@@ -45,7 +45,7 @@ const DateRangeDropdown: React.FC<Props> = ({ value, onChange }) => {
 
   const label =
     selected?.from && selected?.to
-      ? `${format(selected.from, 'MMM dd yyyy')} - ${format(selected.to, 'MMM dd yyyy')}`
+      ? `${format(selected.from, 'MMM dd')} - ${format(selected.to, 'MMM dd yyyy')}`
       : 'Select Dates';
 
   return (

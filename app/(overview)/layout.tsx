@@ -7,13 +7,14 @@ export default function DashboardLayout({ children }: { children:React.ReactNode
   const [menuSelect,setMenuSelect] = useState(false)
 
   return (
-    <div className="flex flex-col">
-      <Header onMenuSelect={setMenuSelect}/>
-      <div className="flex flex-1 overflow-hidden min-h-dvh ">
+    <div className="flex flex-col min-h-screen overflow-x-hidden">
+      <Header onMenuSelect={() => setMenuSelect(true)} />
+      <div className="flex flex-1 min-w-0">
         <SideBar menuSelect={menuSelect}/>
-        {children}
+        <main className="flex-1 w-full min-w-0">
+          {children}
+        </main>
       </div>
-      
     </div>
   );
 } 

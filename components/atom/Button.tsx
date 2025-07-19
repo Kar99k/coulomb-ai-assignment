@@ -14,9 +14,9 @@ type ButtonProps = {
 };
 
 const sizeClasses = {
-  sm: 'px-3 py-1.5 min-w-20 text-sm',
-  md: 'px-3 py-2 min-w-40 text-base',
-  lg: 'px-3 py-2 min-w-44 text-base',
+  sm: 'px-3 py-1.5  text-sm h-10',
+  md: 'px-3 py-2  sm:text-base text-xs h-10',
+  lg: 'px-3 py-2  sm:text-base text-xs h-10',
 };
 
 

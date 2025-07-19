@@ -32,12 +32,12 @@ export default function MultiSelectDropdown<T extends string>({
 
   return (
     <div className="relative inline-block text-left">
-      <Button size="md" onClick={() => setIsOpen(!isOpen)} iconPosition="end" icon={<ChevronDown/>}>
+      <Button size="md" onClick={() => setIsOpen(!isOpen)} iconPosition="end" icon={<ChevronDown className="size-4"/>}>
         <span className="truncate">{displayLabel}</span>
       </Button>
 
       {isOpen && (
-        <ul className="absolute z-10 mt-2 w-64 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
+        <ul className="absolute z-10 mt-2 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto w-full">
           {options.map((option) => {
             const isChecked = selected.includes(option);
             const disabled = !isChecked && selected.length >= maxSelect;

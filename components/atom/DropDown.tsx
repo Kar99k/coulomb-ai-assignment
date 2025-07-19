@@ -52,7 +52,7 @@ const Dropdown: React.FC<DropdownProps> = ({
       )}
 
       {isOpen && options.length > 0 && (
-        <div className="absolute z-50 mt-2 w-full min-w-40 bg-white border border-gray-200 rounded-md shadow-lg">
+        <div className="absolute z-50 mt-2 w-full min-w-40 bg-white border border-gray-200 rounded-md shadow-lg text-xs sm:text-base">
           {options.map(option => (
             <div
               key={option}

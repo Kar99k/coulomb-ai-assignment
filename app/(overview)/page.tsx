@@ -73,7 +73,7 @@ export default function Home() {
   },[location,dateRange])
 
   return (
-    <div className="p-6 flex flex-col gap-6 w-dvw bg-background">
+    <div className="p-6 flex flex-col gap-6 bg-background">
         <div className="text-2xl font-medium">Overview</div>        
 
         <div className="flex flex-col gap-2">
@@ -93,13 +93,13 @@ export default function Home() {
                   />
                </div>         
             </div>
-            <div className="grid grid-cols-2 gap-[24px]">
-              <div className="bg-white p-4 cursor-pointer rounded-2xl border border-[#E9EFF5] backdrop-blur-2xl min-h-[486px]" onClick={()=>handleRoute("temperature_2m")}>
-                 <div className="flex items-center">
+
+            <div className="grid grid-cols-1 gap-[24px] xl:grid-cols-2">
+              <div className="bg-white p-4 md:p-6 cursor-pointer rounded-2xl border border-[#E9EFF5] backdrop-blur-2xl min-h-[486px]" onClick={()=>handleRoute("temperature_2m")}>
+                 <div className="flex items-center gap-3">
                       <ThermometerIcon width={24} height={24}/>
                       <div className="font-semibold text-xl">Temperature</div>
                  </div>
-                 
                   {tempdata ? (
                      <div className="mt-6">
                         <ChartWidget data={tempdata} />
@@ -111,14 +111,11 @@ export default function Home() {
                   )}
               </div>
 
-              <div className="bg-white p-4 cursor-pointer rounded-2xl border border-[#E9EFF5] backdrop-blur-2xl min-h-[486px]" onClick={()=>handleRoute("precipitation")}>
-                 <div className="flex items-center">
+              <div className="bg-white p-4 md:p-6 cursor-pointer rounded-2xl border border-[#E9EFF5] backdrop-blur-2xl min-h-[486px]" onClick={()=>handleRoute("precipitation")}>
+                 <div className="flex items-center gap-3">
                       <CloudHailIcon width={24} height={24}/>
                       <div className="font-semibold text-xl">Precipitation</div>
                  </div>
-                 
-                  
-
                   {preciData ? (
                      <div className="mt-6">
                         <ChartWidget data={preciData}/>
@@ -128,11 +125,10 @@ export default function Home() {
                         <Spinner />
                      </div>
                   )}
-                
               </div>
 
-              <div className="bg-white p-4 cursor-pointer rounded-2xl border border-[#E9EFF5] backdrop-blur-2xl min-h-[486px]" onClick={()=>handleRoute("wind_speed_10m")}>
-                 <div className="flex items-center">
+              <div className="bg-white p-4 md:p-6 cursor-pointer rounded-2xl border border-[#E9EFF5] backdrop-blur-2xl min-h-[486px]" onClick={()=>handleRoute("wind_speed_10m")}>
+                 <div className="flex items-center gap-3">
                       <WindIcon width={24} height={24}/>
                       <div className="font-semibold text-xl">Wind Speed</div>
                  </div>
@@ -146,8 +142,7 @@ export default function Home() {
                         <Spinner />
                      </div>
                   )}
-                
-              </div>
+               </div>
             </div>
         </div>
         
