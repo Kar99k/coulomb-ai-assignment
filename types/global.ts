@@ -6,7 +6,7 @@ declare global {
 
     type AllowedLocations = "India" | "China" | "USA" | "UK" | "Japan" | "Australia" ;
     type AllowedMetrics = "temperature_2m" | "relative_humidity_2m" | "apparent_temperature" | "precipitation" | "pressure_msl" | "wind_speed_10m";
-
+    
     type DailyMetricCategory = {
     Temperature: string[],
     Precipitation: string[],

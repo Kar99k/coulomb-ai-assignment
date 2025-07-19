@@ -8,7 +8,7 @@ import Spinner from "@/components/Spinner"
 import { getAllMetricsbyParams } from "@/lib/api"
 import { LOCATIONS, METRICS_LABEL } from "@/lib/constants"
 import { extractChartConfigByHourlyMetric } from "@/lib/utils"
-import { useParams, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 
 export default function DetailedView(){
@@ -78,7 +78,7 @@ export default function DetailedView(){
 
                 <div className="bg-white min-h-[332px] p-4 rounded-2xl border border-[#E9EFF5]">
                      <div className="flex items-center justify-between">
-                        <div className="font-semibold text-xl">Temperature</div>
+                        <div className="font-semibold text-xl">{metrics.map(metric => METRICS_LABEL[metric]).join(", ")}</div>
                          <MultiSelectDropdown<AllowedMetrics>
                             options={metricsOptions}
                             selected={metrics}
