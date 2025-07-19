@@ -29,6 +29,7 @@ declare global {
         data: number[]
         tooltip?: tooltip
         yAxis?:number
+        color?:string
     }
 
     interface BaseChart {

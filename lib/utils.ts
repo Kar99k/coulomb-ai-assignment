@@ -94,48 +94,82 @@ export function extractChartConfigByDailyMetric(
 }
 
 export function extractChartConfigByHourlyMetric(
-  data:any,
-  multi_metric:string[]
-):HourlyMetricsChart{
+  data: any | any[],
+  multi_metric: string[]
+): HourlyMetricsChart {
+  const isArray = Array.isArray(data);
+  const dataArray = isArray ? data : [data];
 
-  const BulkMetricData = data?.hourly as Record<string, any>;
-  const time:string[] = BulkMetricData.time;
-  let series:DataSeries[] = [];
-  let yAxis:any = []
-  let title:string[] = []
+  const time = dataArray[0]?.hourly?.time || [];
 
-  const buildConfig = (metric: string,index:number) => {
-    const seriesData = BulkMetricData[metric];
-    const name = METRICS_LABEL[metric as keyof typeof METRICS_LABEL] ?? metric;
-    series.push({
+  const getLocationMeta = (timezone: string) => {
+    for (const [name, meta] of Object.entries(LOCATIONS)) {
+      if (meta.tz === timezone) {
+        return { name, color: meta.color };
+      }
+    }
+    return { name: 'Unknown', color: '#999' };
+  };
+
+  const usedColorMap = new Map<string, string>();
+  let colorIndex = 0;
+
+  const getColorFor = (location: string, metric: string) => {
+    const key = `${location}_${metric}`;
+    if (usedColorMap.has(key)) return usedColorMap.get(key)!;
+    const color = TAILWIND_COLORS[colorIndex % TAILWIND_COLORS.length];
+    usedColorMap.set(key, color);
+    colorIndex++;
+    return color;
+  };
+
+  const series: DataSeries[] = [];
+  const yAxis: any[] = [];
+  const titleParts: string[] = [];
+
+  multi_metric.forEach((metric, metricIndex) => {
+    dataArray.forEach((d) => {
+      const BulkMetricData = d?.hourly as Record<string, any>;
+      const locationMeta = getLocationMeta(d.timezone);
+      const metricData = BulkMetricData?.[metric];
+      const unit = d?.hourly_units?.[metric];
+
+      if (!metricData) return;
+
+      const name = `${locationMeta.name} - ${
+        METRICS_LABEL[metric as keyof typeof METRICS_LABEL] ?? metric
+      }`;
+
+      series.push({
         name,
-        data: seriesData,
-        type: METRICS_CHART_TYPE[metric] ?? "spline",
+        data: metricData,
+        type: METRICS_CHART_TYPE[metric] ?? 'spline',
         tooltip: {
-           valueSuffix: data.hourly_units[metric as keyof typeof data.hourly_units]
+          valueSuffix: unit,
         },
-        yAxis: index
+        yAxis: metricIndex,
+        color: getColorFor(locationMeta.name, metric),
       });
+    });
 
     yAxis.push({
-      title: { text: METRICS_LABEL[metric as keyof typeof METRICS_LABEL] ?? metric },
-      opposite: index === 1,
-    })
+      title: {
+        text: METRICS_LABEL[metric as keyof typeof METRICS_LABEL] ?? metric,
+      },
+      opposite: metricIndex % 2 === 1,
+    });
 
-    title.push(name) 
-
-  };
-
-
-  multi_metric.forEach((metric,index)=>buildConfig(metric,index))
+    titleParts.push(METRICS_LABEL[metric as keyof typeof METRICS_LABEL] ?? metric);
+  });
 
   return {
-    yAxis,
-    title: title.join(","),
     xAxis: time,
-    series
+    yAxis,
+    series,
+    title: titleParts.join(', '),
   };
 }
+
 
 export function multiSelectCountries(countries: LocationOption[]) {
   const isAll = countries.includes("All Locations");

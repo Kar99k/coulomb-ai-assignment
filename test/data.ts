@@ -567,7 +567,7 @@ export const batch_widget_metrics = {
   }
 }
 
-export const multi_countries = [
+export const multi_countries_daily = [
   {
     "latitude": 28.646748,
     "longitude": 77.17218,
@@ -691,6 +691,197 @@ export const multi_countries = [
       "temperature_2m_min": [21.4, 18.2, 19, 21.5, 24.1, 23.5, 22.8, 22.6, 21.4, 22.5, 22.4, 23, 22.7, 23, null],
       "precipitation_sum": [0.2, 0, 0, 0, 4.1, 15.6, 1.6, 18.6, 0.2, 0.2, 0.2, 17.5, 2.7, 2.2, null],
       "wind_speed_10m_max": [18, 11.6, 15, 13.3, 16.3, 14.6, 9.5, 6.6, 12.1, 13.2, 14.5, 13.7, 8.7, 11.6, null]
+    }
+  }
+]
+
+export const multi_countries_hourly = [
+  {
+    "latitude": 28.646748,
+    "longitude": 77.17218,
+    "generationtime_ms": 0.151276588439941,
+    "utc_offset_seconds": 19800,
+    "timezone": "Asia/Kolkata",
+    "timezone_abbreviation": "GMT+5:30",
+    "elevation": 214,
+    "hourly_units": {
+      "time": "iso8601",
+      "temperature_2m": "°C",
+      "relative_humidity_2m": "%"
+    },
+    "hourly": {
+      "time": [
+        "2025-07-17T00:00",
+        "2025-07-17T01:00",
+        "2025-07-17T02:00",
+        "2025-07-17T03:00",
+        "2025-07-17T04:00",
+        "2025-07-17T05:00",
+        "2025-07-17T06:00",
+        "2025-07-17T07:00",
+        "2025-07-17T08:00",
+        "2025-07-17T09:00",
+        "2025-07-17T10:00",
+        "2025-07-17T11:00",
+        "2025-07-17T12:00",
+        "2025-07-17T13:00",
+        "2025-07-17T14:00",
+        "2025-07-17T15:00",
+        "2025-07-17T16:00",
+        "2025-07-17T17:00",
+        "2025-07-17T18:00",
+        "2025-07-17T19:00",
+        "2025-07-17T20:00",
+        "2025-07-17T21:00",
+        "2025-07-17T22:00",
+        "2025-07-17T23:00"
+      ],
+      "temperature_2m": [27.8, 27.6, 27.5, 27.3, 27.1, 27, 26.9, 27.3, 28.1, 28.7, 29.5, 30.3, 30.1, 29.7, 30.2, 30.7, 31.2, 30.9, 29.6, 28.9, 28.6, 27.8, 27.3, 27],
+      "relative_humidity_2m": [90, 91, 92, 92, 93, 93, 85, 84, 81, 77, 73, 69, 72, 73, 73, 70, 68, 69, 81, 86, 87, 89, 92, 93]
+    },
+    "daily_units": {
+      "time": "iso8601",
+      "temperature_2m_mean": "°C",
+      "temperature_2m_max": "°C",
+      "temperature_2m_min": "°C",
+      "precipitation_sum": "mm",
+      "wind_speed_10m_max": "km/h"
+    },
+    "daily": {
+      "time": [
+        "2025-07-17"
+      ],
+      "temperature_2m_mean": [28.6],
+      "temperature_2m_max": [31.2],
+      "temperature_2m_min": [26.9],
+      "precipitation_sum": [2.1],
+      "wind_speed_10m_max": [12.7]
+    }
+  },
+  {
+    "latitude": 39.89455,
+    "longitude": 116.35983,
+    "generationtime_ms": 0.11754035949707,
+    "utc_offset_seconds": 28800,
+    "timezone": "Asia/Shanghai",
+    "timezone_abbreviation": "GMT+8",
+    "elevation": 47,
+    "location_id": 1,
+    "hourly_units": {
+      "time": "iso8601",
+      "temperature_2m": "°C",
+      "relative_humidity_2m": "%"
+    },
+    "hourly": {
+      "time": [
+        "2025-07-17T00:00",
+        "2025-07-17T01:00",
+        "2025-07-17T02:00",
+        "2025-07-17T03:00",
+        "2025-07-17T04:00",
+        "2025-07-17T05:00",
+        "2025-07-17T06:00",
+        "2025-07-17T07:00",
+        "2025-07-17T08:00",
+        "2025-07-17T09:00",
+        "2025-07-17T10:00",
+        "2025-07-17T11:00",
+        "2025-07-17T12:00",
+        "2025-07-17T13:00",
+        "2025-07-17T14:00",
+        "2025-07-17T15:00",
+        "2025-07-17T16:00",
+        "2025-07-17T17:00",
+        "2025-07-17T18:00",
+        "2025-07-17T19:00",
+        "2025-07-17T20:00",
+        "2025-07-17T21:00",
+        "2025-07-17T22:00",
+        "2025-07-17T23:00"
+      ],
+      "temperature_2m": [27.4, 27.1, 26.9, 26.5, 25.7, 24.7, 24.3, 25.1, 26.4, 29.2, 31.1, 32.6, 33.7, 34.5, 35.2, 36.2, 36.2, 36.2, 35.6, 34, 32.7, 33.2, 31.8, 31.4],
+      "relative_humidity_2m": [68, 68, 68, 71, 76, 78, 72, 62, 56, 44, 36, 32, 29, 29, 28, 25, 25, 24, 26, 33, 40, 35, 37, 37]
+    },
+    "daily_units": {
+      "time": "iso8601",
+      "temperature_2m_mean": "°C",
+      "temperature_2m_max": "°C",
+      "temperature_2m_min": "°C",
+      "precipitation_sum": "mm",
+      "wind_speed_10m_max": "km/h"
+    },
+    "daily": {
+      "time": [
+        "2025-07-17"
+      ],
+      "temperature_2m_mean": [30.8],
+      "temperature_2m_max": [36.2],
+      "temperature_2m_min": [24.3],
+      "precipitation_sum": [0],
+      "wind_speed_10m_max": [10.6]
+    }
+  },
+  {
+    "latitude": 40.738136,
+    "longitude": -74.04254,
+    "generationtime_ms": 0.123858451843262,
+    "utc_offset_seconds": -14400,
+    "timezone": "America/New_York",
+    "timezone_abbreviation": "GMT-4",
+    "elevation": 32,
+    "location_id": 2,
+    "hourly_units": {
+      "time": "iso8601",
+      "temperature_2m": "°C",
+      "relative_humidity_2m": "%"
+    },
+    "hourly": {
+      "time": [
+        "2025-07-17T00:00",
+        "2025-07-17T01:00",
+        "2025-07-17T02:00",
+        "2025-07-17T03:00",
+        "2025-07-17T04:00",
+        "2025-07-17T05:00",
+        "2025-07-17T06:00",
+        "2025-07-17T07:00",
+        "2025-07-17T08:00",
+        "2025-07-17T09:00",
+        "2025-07-17T10:00",
+        "2025-07-17T11:00",
+        "2025-07-17T12:00",
+        "2025-07-17T13:00",
+        "2025-07-17T14:00",
+        "2025-07-17T15:00",
+        "2025-07-17T16:00",
+        "2025-07-17T17:00",
+        "2025-07-17T18:00",
+        "2025-07-17T19:00",
+        "2025-07-17T20:00",
+        "2025-07-17T21:00",
+        "2025-07-17T22:00",
+        "2025-07-17T23:00"
+      ],
+      "temperature_2m": [24.6, 24.4, 24.1, 23.8, 23.7, 23.6, 23.8, 24.7, 25.5, 25.8, 27.1, 28.7, 30.3, 31.8, 32.7, 33.4, 33.1, 32.7, 31.4, 30.3, 30, null, null, null],
+      "relative_humidity_2m": [93, 94, 95, 96, 97, 97, 97, 94, 92, 85, 77, 74, 68, 60, 53, 51, 52, 55, 61, 66, 67, null, null, null]
+    },
+    "daily_units": {
+      "time": "iso8601",
+      "temperature_2m_mean": "°C",
+      "temperature_2m_max": "°C",
+      "temperature_2m_min": "°C",
+      "precipitation_sum": "mm",
+      "wind_speed_10m_max": "km/h"
+    },
+    "daily": {
+      "time": [
+        "2025-07-17"
+      ],
+      "temperature_2m_mean": [null],
+      "temperature_2m_max": [null],
+      "temperature_2m_min": [null],
+      "precipitation_sum": [null],
+      "wind_speed_10m_max": [null]
     }
   }
 ]
