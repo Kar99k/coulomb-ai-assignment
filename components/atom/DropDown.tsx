@@ -17,12 +17,12 @@ type DropdownProps = {
 const Dropdown: React.FC<DropdownProps> = ({
   options = [],
   customTrigger,
+  selected,
   onSelect,
   placeholder = 'Select an option',
   size
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -36,7 +36,6 @@ const Dropdown: React.FC<DropdownProps> = ({
   }, []);
 
   const handleSelect = (value: string) => {
-    setSelected(value);
     setIsOpen(false);
     onSelect?.(value);
   };
@@ -47,7 +46,7 @@ const Dropdown: React.FC<DropdownProps> = ({
         <div onClick={() => setIsOpen(!isOpen)}>{customTrigger}</div>
       ) : (
         <Button onClick={() => setIsOpen(!isOpen)} size={size} iconPosition='end' icon={<ChevronDown />} className='text-base min-w-46'>
-          {selected || placeholder}
+          {selected === "__ALL__" ? "All Locations" : selected || placeholder}
         </Button>
       )}
 
@@ -62,7 +61,7 @@ const Dropdown: React.FC<DropdownProps> = ({
                 selected === option && 'bg-gray-100 font-medium'
               )}
             >
-              {option}
+              {option === "__ALL__" ? "All Locations" : option}
             </div>
           ))}
         </div>

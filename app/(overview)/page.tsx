@@ -17,7 +17,7 @@ import MultiSelectDropdown from "@/components/molecule/MultiSelectDropdown";
 export default function Home() {
   
   const locationOptions: LocationOption[] = ["All Locations", "India", "USA", "UK", "Japan", "Australia", "China"];
-  const [locations, setLocations] = useState<LocationOption[]>(["India"]);
+  const [locations, setLocations] = useState<LocationOption[]>(["All Locations"]);
 
   const [tempdata,settempData] = useState<TempLineChart>()
   const [windData, setwindData] = useState<WindLineChart>()
@@ -34,8 +34,8 @@ export default function Home() {
    function handleRoute(metrics:string) {
 
    const locationParam = locations.includes("All Locations")
-  ? Object.keys(LOCATIONS).join(",")
-  : locations.join(",");
+    ? "All Locations"
+    : locations[0];
 
    const params = new URLSearchParams({
       location: locationParam,
@@ -100,7 +100,6 @@ export default function Home() {
       <div className="h-12">
         <div className="flex gap-4">
           <DateRangeDropDown value={dateRange} onChange={setDateRange} />
-
           <Dropdown
             options={locationOptions}
             selected={locations[0]}
