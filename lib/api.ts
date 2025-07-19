@@ -29,8 +29,6 @@ export async function getAllMetricsbyParams({
     if(dailyMetrics.length>0) url.searchParams.set("daily", dailyMetrics.join(","));
     if(hourlyMetrics.length>0) url.searchParams.set("hourly", hourlyMetrics.join(","));
     
-    console.log("url : ", url)
-
     const response = await fetch(url.toString());
 
     if (!response.ok) {

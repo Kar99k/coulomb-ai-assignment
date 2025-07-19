@@ -45,6 +45,4 @@ declare global {
     interface WindLineChart extends BaseChart{}
     interface PreciBarChart extends BaseChart{}
     interface HourlyMetricsChart extends Omit<BaseChart, 'type'|'unit'>{ }
-
-
 }

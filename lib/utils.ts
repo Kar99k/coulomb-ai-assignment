@@ -7,12 +7,12 @@ const TAILWIND_COLORS = [
 ];
 
 export function extractChartConfigByDailyMetric(
-  data: any | any[],
+  data: DailyMetrics | DailyMetrics[],
   { Temperature = [], Precipitation = [], WindSpeed = [] }: DailyMetricCategory
 ) {
   const isArray = Array.isArray(data);
   const dataArray = isArray ? data : [data];
-  const time = dataArray[0]?.daily?.time || [];
+  const time = dataArray[0]?.daily?.time as string[] || [] as string[];
 
   const getLocationMeta = (timezone: string) => {
     for (const [name, meta] of Object.entries(LOCATIONS)) {
@@ -47,7 +47,7 @@ export function extractChartConfigByDailyMetric(
           const label = METRICS_LABEL[metric as keyof typeof METRICS_LABEL] ?? metric;
           const seriesItem: { name: string; data: number[]; color?: string } = {
             name: `${locationName} - ${label}`,
-            data: BulkMetricData[metric],
+            data: BulkMetricData[metric] as number[],
           };
 
           if (isArray || metrics.length > 1) {
@@ -65,7 +65,7 @@ export function extractChartConfigByDailyMetric(
   const pickUnit = (metricList: string[], d: any) =>
     metricList.map((m) => d.daily_units?.[m]).filter(Boolean)[0] || '';
 
-  const TempChartConfig = {
+  const TempChartConfig:TempLineChart = {
     title: 'Temperature',
     type: 'spline',
     xAxis: time,
@@ -73,7 +73,7 @@ export function extractChartConfigByDailyMetric(
     series: createSeries(Temperature),
   };
 
-  const PreciChartConfig = {
+  const PreciChartConfig:PreciBarChart = {
     title: 'Precipitation',
     type: 'column',
     xAxis: time,
@@ -81,7 +81,7 @@ export function extractChartConfigByDailyMetric(
     series: createSeries(Precipitation),
   };
 
-  const WindChartConfig = {
+  const WindChartConfig:WindLineChart = {
     title: 'Wind Speed',
     type: 'spline',
     xAxis: time,
@@ -89,12 +89,11 @@ export function extractChartConfigByDailyMetric(
     series: createSeries(WindSpeed),
   };
 
-  console.log({ TempChartConfig, PreciChartConfig, WindChartConfig });
   return { TempChartConfig, PreciChartConfig, WindChartConfig };
 }
 
 export function extractChartConfigByHourlyMetric(
-  data: any | any[],
+  data: HourlyMetrics | HourlyMetrics[],
   multi_metric: string[]
 ): HourlyMetricsChart {
   const isArray = Array.isArray(data);
@@ -145,7 +144,7 @@ export function extractChartConfigByHourlyMetric(
         data: metricData,
         type: METRICS_CHART_TYPE[metric] ?? 'spline',
         tooltip: {
-          valueSuffix: unit,
+          valueSuffix: unit ?? '',
         },
         yAxis: metricIndex,
         color: getColorFor(locationMeta.name, metric),
@@ -163,7 +162,7 @@ export function extractChartConfigByHourlyMetric(
   });
 
   return {
-    xAxis: time,
+    xAxis: time as string[],
     yAxis,
     series,
     title: titleParts.join(', '),
