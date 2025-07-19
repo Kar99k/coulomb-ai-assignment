@@ -62,7 +62,7 @@ export function extractChartConfigByDailyMetric(
     return allSeries;
   };
 
-  const pickUnit = (metricList: string[], d: any) =>
+  const pickUnit = (metricList: string[], d: DailyMetrics) =>
     metricList.map((m) => d.daily_units?.[m]).filter(Boolean)[0] || '';
 
   const TempChartConfig:TempLineChart = {
@@ -99,7 +99,7 @@ export function extractChartConfigByHourlyMetric(
   const isArray = Array.isArray(data);
   const dataArray = isArray ? data : [data];
 
-  const time = dataArray[0]?.hourly?.time || [];
+  const time = dataArray[0]?.hourly?.time as string[] || [] as string[];
 
   const getLocationMeta = (timezone: string) => {
     for (const [name, meta] of Object.entries(LOCATIONS)) {
