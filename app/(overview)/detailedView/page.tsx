@@ -1,7 +1,7 @@
 "use client"
 
 import Dropdown from "@/components/atom/DropDown"
-import HourlyChart from "@/components/HourlyChart"
+import HourlyChart from "@/components/template/HourlyChart"
 import DateRangeDropDown from "@/components/molecule/DateRangeDropDown"
 import MultiSelectDropdown from "@/components/molecule/MultiSelectDropdown"
 import Spinner from "@/components/Spinner"

@@ -1,6 +1,6 @@
 "use client"
 
-import ChartWidget from "@/components/ChartWidget";
+import ChartWidget from "@/components/template/ChartWidget";
 import { useEffect, useState } from "react";
 import {CloudHailIcon, MoveDown, ThermometerIcon, WindIcon} from 'lucide-react'
 import { extractChartConfigByDailyMetric, multiSelectCountries } from "@/lib/utils";
