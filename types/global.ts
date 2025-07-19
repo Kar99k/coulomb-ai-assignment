@@ -1,13 +1,11 @@
-import { METRICS_LABEL } from "@/lib/constants";
-
 export {};
 
 declare global {
 
     type AllowedLocations = "India" | "China" | "USA" | "UK" | "Japan" | "Australia" ;
     type AllowedMetrics = "temperature_2m" | "relative_humidity_2m" | "apparent_temperature" | "precipitation" | "pressure_msl" | "wind_speed_10m";
-    type AllowedLocationsWithSelectAll = AllowedLocations | "All Cities Selected"
-    
+    type LocationOption = AllowedLocations | "All Locations";
+
     type DailyMetricCategory = {
     Temperature: string[],
     Precipitation: string[],

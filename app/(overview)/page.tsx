@@ -3,7 +3,7 @@
 import ChartWidget from "@/components/ChartWidget";
 import { useEffect, useState } from "react";
 import {CloudHailIcon, MoveDown, ThermometerIcon, WindIcon} from 'lucide-react'
-import { extractChartConfigByDailyMetric } from "@/lib/utils";
+import { extractChartConfigByDailyMetric, multiSelectCountries } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import Spinner from "@/components/Spinner";
 import { getAllMetricsbyParams } from "@/lib/api";
@@ -11,11 +11,13 @@ import { LOCATIONS } from "@/lib/constants";
 import Dropdown from "@/components/atom/DropDown";
 import DateRangeDropDown from "@/components/molecule/DateRangeDropDown";
 import { multi_countries } from "@/test/data";
+import MultiSelectDropdown from "@/components/molecule/MultiSelectDropdown";
 
 
 export default function Home() {
   
-  const options:AllowedLocations[] = ["India", "USA", "UK", "Japan","Australia","China"];
+  const locationOptions: LocationOption[] = ["All Locations", "India", "USA", "UK", "Japan", "Australia", "China"];
+  const [locations, setLocations] = useState<LocationOption[]>(["India"]);
 
   const [tempdata,settempData] = useState<TempLineChart>()
   const [windData, setwindData] = useState<WindLineChart>()
@@ -25,14 +27,18 @@ export default function Home() {
     to: '2025-07-16'
   })
 
-  const [location,setLocation] = useState<AllowedLocations>('India')
   const [isLoading,setIsLoading] = useState(true)
-
+  
   const router = useRouter();
   
    function handleRoute(metrics:string) {
+
+   const locationParam = locations.includes("All Locations")
+  ? Object.keys(LOCATIONS).join(",")
+  : locations.join(",");
+
    const params = new URLSearchParams({
-      location: location,
+      location: locationParam,
       start_date: dateRange.from,
       end_date: dateRange.to,
       metrics: metrics,
@@ -42,15 +48,17 @@ export default function Home() {
    }
 
   useEffect(()=>{
-      
+   
    const fetchAllDailyMetrics = async () =>{
          setIsLoading(true)
+         const { lat, lon,tz } = multiSelectCountries(locations);
+
           const result = await getAllMetricsbyParams({
-            lat: LOCATIONS[location].lat,
-            lon: LOCATIONS[location].lon,
+            lat,
+            lon,
             start_date: dateRange.from,
             end_date: dateRange.to,
-            timezone: LOCATIONS[location].tz,
+            timezone: tz,
             dailyMetrics: [
                 "apparent_temperature_mean",
                 "temperature_2m_max",
@@ -74,10 +82,9 @@ export default function Home() {
 
       fetchAllDailyMetrics()
 
-  },[location,dateRange])
+  },[locations,dateRange])
   
   
-
   return (
   <div className="relative p-6 flex flex-col gap-6 bg-background min-h-screen">
 
@@ -93,15 +100,12 @@ export default function Home() {
       <div className="h-12">
         <div className="flex gap-4">
           <DateRangeDropDown value={dateRange} onChange={setDateRange} />
+
           <Dropdown
-            options={options}
-            selected={location}
-            placeholder="All Cities Selected"
-            onSelect={(value) => {
-              if (value in LOCATIONS) {
-                setLocation(value as AllowedLocations);
-              }
-            }}
+            options={locationOptions}
+            selected={locations[0]}
+            onSelect={(val) => setLocations([val as LocationOption])}
+            placeholder="Select a location"
             size="lg"
           />
         </div>

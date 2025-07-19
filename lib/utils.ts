@@ -137,20 +137,26 @@ export function extractChartConfigByHourlyMetric(
   };
 }
 
-export function multiSelectCountries(countries: (keyof typeof LOCATIONS)[]) {
+export function multiSelectCountries(countries: LocationOption[]) {
+  const isAll = countries.includes("All Locations");
+  const keys = isAll ? Object.keys(LOCATIONS) as AllowedLocations[] : countries as AllowedLocations[];
+
   const latitudes: string[] = [];
   const longitudes: string[] = [];
+  const timezone: string[] = [];
 
-  countries.forEach((country) => {
+  keys.forEach((country) => {
     const location = LOCATIONS[country];
     if (location) {
       latitudes.push(location.lat);
       longitudes.push(location.lon);
+      timezone.push(location.tz);
     }
   });
 
   return {
     lat: latitudes.join(','),
     lon: longitudes.join(','),
+    tz: timezone.join(',')
   };
 }
