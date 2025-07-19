@@ -7,11 +7,8 @@ import { extractChartConfigByDailyMetric, multiSelectCountries } from "@/lib/uti
 import { useRouter } from "next/navigation";
 import Spinner from "@/components/atoms/Spinner";
 import { getAllMetricsbyParams } from "@/lib/api";
-import { LOCATIONS } from "@/lib/constants";
 import Dropdown from "@/components/atoms/DropDown";
 import DateRangeDropDown from "@/components/molecules/DateRangeDropDown";
-import { multi_countries } from "@/test/data";
-import MultiSelectDropdown from "@/components/molecules/MultiSelectDropdown";
 
 
 export default function Home() {
