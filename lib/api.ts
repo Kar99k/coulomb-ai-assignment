@@ -10,7 +10,7 @@ type SearchParams = {
   hourlyMetrics?:string[];
 };
 
-export async function getAllDailyMetrics({
+export async function getAllMetricsbyParams({
   lat,
   lon,
   start_date,

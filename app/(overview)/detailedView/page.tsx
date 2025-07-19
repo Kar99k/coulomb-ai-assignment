@@ -5,7 +5,7 @@ import HourlyChart from "@/components/HourlyChart"
 import DateRangeDropDown from "@/components/molecule/DateRangeDropDown"
 import MultiSelectDropdown from "@/components/molecule/MultiSelectDropdown"
 import Spinner from "@/components/Spinner"
-import { getAllDailyMetrics } from "@/lib/api"
+import { getAllMetricsbyParams } from "@/lib/api"
 import { LOCATIONS, METRICS_LABEL } from "@/lib/constants"
 import { extractChartConfigByHourlyMetric } from "@/lib/utils"
 import { useParams, useSearchParams } from "next/navigation"
@@ -39,7 +39,7 @@ export default function DetailedView(){
 
     useEffect(() => {
     const fetchData = async () => {
-        const result = await getAllDailyMetrics({
+        const result = await getAllMetricsbyParams({
         lat: LOCATIONS[location].lat,
         lon: LOCATIONS[location].lon,
         start_date: dateRange.from,
