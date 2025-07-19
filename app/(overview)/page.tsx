@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import {CloudHailIcon, MoveDown, ThermometerIcon, WindIcon} from 'lucide-react'
 import { extractChartConfigByDailyMetric, multiSelectCountries } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-import Spinner from "@/components/Spinner";
+import Spinner from "@/components/atom/Spinner";
 import { getAllMetricsbyParams } from "@/lib/api";
 import { LOCATIONS } from "@/lib/constants";
 import Dropdown from "@/components/atom/DropDown";

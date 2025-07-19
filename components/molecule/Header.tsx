@@ -1,6 +1,6 @@
 "use client"
 import { Menu } from "lucide-react";
-import Avatar from "./atom/Avatar";
+import Avatar from "../atom/Avatar";
 
 const Header: React.FC<{onMenuSelect:React.Dispatch<React.SetStateAction<boolean>>}> = ({onMenuSelect}) =>{
 
