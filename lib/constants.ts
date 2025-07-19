@@ -28,35 +28,35 @@ export const METRICS_CHART_TYPE: Record<string, string> = {
     wind_speed_10m: "spline"
 } as const
 
-export const LOCATIONS: Record<AllowedLocations, { lat: number; lon: number; tz: string }> = {
+export const LOCATIONS: Record<AllowedLocations, { lat: string; lon: string; tz: string }> = {
   India: {
-    lat: 28.6139,
-    lon: 77.2090,
+    lat: "28.6139",
+    lon: "77.2090",
     tz: "Asia/Kolkata",
   },
   China: {
-    lat: 39.9042,
-    lon: 116.4074,
+    lat: "39.9042",
+    lon: "116.4074",
     tz: "Asia/Shanghai",
   },
   USA: {
-    lat: 40.7128,
-    lon: -74.0060,
+    lat: "40.7128",
+    lon: "-74.0060",
     tz: "America/New_York",
   },
   UK: {
-    lat: 51.5074,
-    lon: -0.1278,
+    lat: "51.5074",
+    lon: "-0.1278",
     tz: "Europe/London",
   },
   Japan: {
-    lat: 35.6895,
-    lon: 139.6917,
+    lat: "35.6895",
+    lon: "139.6917",
     tz: "Asia/Tokyo",
   },
   Australia: {
-    lat: -33.8688,
-    lon: 151.2093,
+    lat: "-33.8688",
+    lon: "151.2093",
     tz: "Australia/Sydney",
   },
 } as const;

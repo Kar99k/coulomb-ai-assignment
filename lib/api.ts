@@ -1,8 +1,8 @@
 const BASE_URL = "https://archive-api.open-meteo.com/v1/archive";
 
 type SearchParams = {
-  lat: number;
-  lon: number;
+  lat: string;
+  lon: string;
   start_date: string;
   end_date: string;
   timezone: string;
@@ -21,8 +21,8 @@ export async function getAllMetricsbyParams({
 }: SearchParams) {
   try {
     const url = new URL(BASE_URL);
-    url.searchParams.set("latitude", lat.toString());
-    url.searchParams.set("longitude", lon.toString());
+    url.searchParams.set("latitude", lat);
+    url.searchParams.set("longitude", lon);
     url.searchParams.set("start_date", start_date);
     url.searchParams.set("end_date", end_date);
     url.searchParams.set("timezone", timezone);
