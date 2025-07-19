@@ -44,7 +44,3 @@ export async function getAllDailyMetrics({
     return null;
   }
 }
-
-export async function getHourlyMetrics({}){
-
-}

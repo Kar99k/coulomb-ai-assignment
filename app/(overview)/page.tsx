@@ -9,8 +9,6 @@ import Spinner from "@/components/Spinner";
 import { getAllDailyMetrics } from "@/lib/api";
 import { LOCATIONS } from "@/lib/constants";
 import Dropdown from "@/components/atom/DropDown";
-import { DayPicker,DateRange } from "react-day-picker";
-import Button from "@/components/atom/Button";
 import DateRangeDropDown from "@/components/molecule/DateRangeDropDown";
 
 
