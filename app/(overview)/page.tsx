@@ -2,13 +2,17 @@
 
 import ChartWidget from "@/components/ChartWidget";
 import { useEffect, useState } from "react";
-import {CloudHailIcon, ThermometerIcon, WindIcon} from 'lucide-react'
+import {CloudHailIcon, MoveDown, ThermometerIcon, WindIcon} from 'lucide-react'
 import { extractChartConfigByDailyMetric } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import Spinner from "@/components/Spinner";
 import { getAllDailyMetrics } from "@/lib/api";
 import { LOCATIONS } from "@/lib/constants";
-import Dropdown from "@/components/DropDown";
+import Dropdown from "@/components/atom/DropDown";
+import { DayPicker,DateRange } from "react-day-picker";
+import Button from "@/components/atom/Button";
+import DateRangeDropDown from "@/components/molecule/DateRangeDropDown";
+
 
 export default function Home() {
   
@@ -21,6 +25,9 @@ export default function Home() {
     from: '2025-07-10',
     to: '2025-07-16'
   })
+   const [selected, setSelected] = useState<DateRange>();
+
+
   const [location,setLocation] = useState<AllowedLocations>('India')
 
   const router = useRouter();
@@ -67,19 +74,26 @@ export default function Home() {
 
       fetchAllDailyMetrics()
 
-  },[location])
+  },[location,dateRange])
 
   return (
     <div className="p-6 flex flex-col gap-6 w-dvw bg-background">
-        <div className="text-2xl font-medium">Overview</div>
+        <div className="text-2xl font-medium">Overview</div>        
 
         <div className="flex flex-col gap-2">
            <div className="h-12">
-               <div className="">
+               <div className="flex  gap-4">
+                  <DateRangeDropDown value={dateRange} onChange={setDateRange}/>
                  <Dropdown
                   options={options}
                   selected={location}
-                  onSelect={setLocation}
+                  placeholder="All Cities Selected"
+                  onSelect={(value) => {
+                     if (value in LOCATIONS) {
+                        setLocation(value as AllowedLocations);
+                     }
+                  }}
+                  size="lg"
                   />
                </div>         
             </div>

@@ -1,8 +1,7 @@
-import { batch_widget_metrics, hourly_temp, multi_metrics, preci_data_for_india, temp_data_for_india, wind_data_for_india } from "@/test/data";
 import { METRICS_LABEL, METRICS_CHART_TYPE } from "@/lib/constants";
 
 export function extractChartConfigByDailyMetric(
-  data:typeof batch_widget_metrics,
+  data:any,
   { Temperature = [], Precipitation = [], WindSpeed = [] }: DailyMetricCategory) {
 
   const BulkMetricData = data.daily as Record<string, any>;
@@ -46,7 +45,7 @@ export function extractChartConfigByDailyMetric(
 }
 
 export function extractChartConfigByHourlyMetric(
-  data: typeof multi_metrics,
+  data:any,
   multi_metric:string[]
 ):HourlyMetricsChart{
 
@@ -58,7 +57,7 @@ export function extractChartConfigByHourlyMetric(
 
   const buildConfig = (metric: string,index:number) => {
     const seriesData = BulkMetricData[metric];
-    const name = METRICS_LABEL[metric] ?? metric;
+    const name = METRICS_LABEL[metric as keyof typeof METRICS_LABEL] ?? metric;
     series.push({
         name,
         data: seriesData,
@@ -70,7 +69,7 @@ export function extractChartConfigByHourlyMetric(
       });
 
     yAxis.push({
-      title: { text: METRICS_LABEL[metric] ?? metric },
+      title: { text: METRICS_LABEL[metric as keyof typeof METRICS_LABEL] ?? metric },
       opposite: index === 1,
     })
 
