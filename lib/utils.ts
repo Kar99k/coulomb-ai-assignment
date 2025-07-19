@@ -123,12 +123,12 @@ export function extractChartConfigByHourlyMetric(
   };
 
   const series: DataSeries[] = [];
-  const yAxis: any[] = [];
+  const yAxis: yAxisTitle[] = [];
   const titleParts: string[] = [];
 
   multi_metric.forEach((metric, metricIndex) => {
     dataArray.forEach((d) => {
-      const BulkMetricData = d?.hourly as Record<string, any>;
+      const BulkMetricData = d?.hourly as Record<string, number[]>;
       const locationMeta = getLocationMeta(d.timezone);
       const metricData = BulkMetricData?.[metric];
       const unit = d?.hourly_units?.[metric];

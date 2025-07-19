@@ -25,7 +25,7 @@ const DateRangeDropdown: React.FC<Props> = ({ value, onChange }) => {
         to: format(selected.to, 'yyyy-MM-dd'),
       });
     }
-  }, [selected]);
+  }, [selected,onChange]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {

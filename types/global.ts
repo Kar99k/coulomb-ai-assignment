@@ -38,7 +38,7 @@ declare global {
         xAxis: string[]
         unit: string
         series: DataSeries[]
-        yAxis?: any
+        yAxis?: yAxisTitle[]
     }
 
     interface TempLineChart extends BaseChart{}

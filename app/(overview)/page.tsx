@@ -2,7 +2,7 @@
 
 import ChartWidget from "@/components/templates/ChartWidget";
 import { useEffect, useState } from "react";
-import {CloudHailIcon, MoveDown, ThermometerIcon, WindIcon} from 'lucide-react'
+import {CloudHailIcon, ThermometerIcon, WindIcon} from 'lucide-react'
 import { extractChartConfigByDailyMetric, multiSelectCountries } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import Spinner from "@/components/atoms/Spinner";
