@@ -20,6 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <link rel="preconnect" href="https://archive-api.open-meteo.com" crossOrigin="anonymous"/>
       <body
         className={`${roboto.variable} antialiased bg-background`}
       >
