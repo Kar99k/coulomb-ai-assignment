@@ -4,6 +4,7 @@ import chartIcon from "@/public/assets/chart.svg"
 import { Routes } from "@/lib/constants";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 
 const menuItems = [
   { label: "Dashboard", href: "/" },
@@ -12,12 +13,27 @@ const menuItems = [
   { label: "Logout", href: "#" },
 ];
 
-const SideBar: React.FC<{menuSelect:boolean}>=({menuSelect})=>{
+const SideBar: React.FC<{menuSelect:boolean, setMenuSelect: (val: boolean) => void}>=({menuSelect,setMenuSelect})=>{
     const router = useRouter();
+
+    const menuRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+      if (!menuSelect) return;
+      function handleClickOutside(event: MouseEvent) {
+        if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+          setMenuSelect(false);
+        }
+      }
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [menuSelect, setMenuSelect]);
 
     return (
         <>
-      <aside className="w-[55px] bg-white border-r border-[#E9EFF5] px-2 py-4 hidden md:block">
+      <aside className="w-[55px] bg-white border-r border-[#E9EFF5] px-2 py-4 hidden md:block" ref={menuRef}>
         <nav
           className="size-10 p-2.5 bg-[#E5F4F2] cursor-pointer rounded-[5px]"
           onClick={() => router.push(Routes.Home.path)}

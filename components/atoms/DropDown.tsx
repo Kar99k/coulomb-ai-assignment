@@ -44,7 +44,7 @@ const Dropdown: React.FC<DropdownProps> = ({
         onClick={() => setIsOpen(!isOpen)}
         size={size}
         iconPosition="end"
-        icon={<ChevronDown />}
+        icon={<ChevronDown className='text-primary'/>}
         className="text-base min-w-46"
       >
         {selected || placeholder}
@@ -53,16 +53,25 @@ const Dropdown: React.FC<DropdownProps> = ({
       {isOpen && options.length > 0 && (
         <div className="absolute z-50 mt-2 w-full min-w-40 bg-white border border-gray-200 rounded-md shadow-lg text-xs sm:text-base">
           {options.map((option) => (
-            <div
+            <label
               key={option}
-              onClick={() => handleSelect(option)}
               className={clsx(
-                'px-4 py-2 cursor-pointer hover:bg-gray-100',
-                selected === option && 'bg-gray-100 font-medium'
+                'flex justify-between items-center px-4 py-2 cursor-pointer hover:bg-gray-100 rounded',
+                selected === option && 'bg-accent font-medium'
               )}
             >
-              {option}
-            </div>
+              <span>{option}</span>
+              <input
+                type="radio"
+                name="options"
+                checked={selected === option}
+                onChange={() => handleSelect(option)}
+                className={clsx(
+                'appearance-none w-4 h-4 rounded-full border border-gray-400 ml-2 relative',
+                'checked:border-[5px] checked:border-[var(--color-primary)]'
+              )}
+              />
+            </label>
           ))}
         </div>
       )}

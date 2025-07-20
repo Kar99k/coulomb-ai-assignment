@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Button from "../atoms/Button";
-import { ChevronDown } from "lucide-react";
+import { Check, ChevronDown } from "lucide-react";
 
 type MultiSelectDropdownProps<T extends string> = {
   options: T[];
@@ -48,13 +48,13 @@ export default function MultiSelectDropdown<T extends string>({
   const displayLabel = selected.map(getLabel).join(", ") || `Select up to ${maxSelect}`;
 
   return (
-    <div ref={dropdownRef} className="relative text-left min-w-40">
+    <div ref={dropdownRef} className="relative text-left ">
       <Button
         size="lg"
         onClick={() => setIsOpen(!isOpen)}
         iconPosition="end"
         className="min-w-40"
-        icon={<ChevronDown className="size-4" />}
+        icon={<ChevronDown className='text-primary size-4'/>}
       >
         <span className="truncate">{displayLabel}</span>
       </Button>
@@ -66,23 +66,19 @@ export default function MultiSelectDropdown<T extends string>({
             const disabled = !isChecked && selected.length >= maxSelect;
             return (
               <li
-                key={option}
-                onClick={() => !disabled && handleSelect(option)}
-                className={`flex items-center px-4 py-2 text-sm cursor-pointer ${
-                  disabled
-                    ? "text-gray-400 cursor-not-allowed"
-                    : "text-gray-700 hover:bg-gray-100"
-                }`}
-              >
-                <input
-                  type="button"
-                  checked={isChecked}
-                  readOnly
-                  className="mr-2"
-                  disabled={disabled}
-                />
-                {getLabel(option)}
-              </li>
+                  key={option}
+                  onClick={() => !disabled && handleSelect(option)}
+                  className={`flex items-center justify-between px-4 py-2 text-sm cursor-pointer ${
+                    disabled
+                      ? "text-gray-400 cursor-not-allowed"
+                      : "text-gray-700 hover:bg-gray-100"
+                  }`}
+                >
+                  <span className="flex items-center">
+                    {getLabel(option)}
+                  </span>
+                  {isChecked && <Check className="text-primary w-4 h-4 ml-2 shrink-0" />}
+                </li>
             );
           })}
         </ul>
