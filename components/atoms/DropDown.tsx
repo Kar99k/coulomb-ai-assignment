@@ -7,20 +7,18 @@ import { ChevronDown } from 'lucide-react';
 
 type DropdownProps = {
   options?: string[];
-  selected: string
-  customTrigger?: React.ReactNode;
+  selected: string;
   onSelect?: (value: string) => void;
   placeholder?: string;
-  size:"md" | "sm" | "lg"
+  size: 'md' | 'sm' | 'lg';
 };
 
 const Dropdown: React.FC<DropdownProps> = ({
   options = [],
-  customTrigger,
   selected,
   onSelect,
   placeholder = 'Select an option',
-  size
+  size,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -42,17 +40,19 @@ const Dropdown: React.FC<DropdownProps> = ({
 
   return (
     <div className="relative inline-block" ref={dropdownRef}>
-      {customTrigger ? (
-        <div onClick={() => setIsOpen(!isOpen)}>{customTrigger}</div>
-      ) : (
-        <Button onClick={() => setIsOpen(!isOpen)} size={size} iconPosition='end' icon={<ChevronDown />} className='text-base min-w-46'>
-          {selected === "__ALL__" ? "All Locations" : selected || placeholder}
-        </Button>
-      )}
+      <Button
+        onClick={() => setIsOpen(!isOpen)}
+        size={size}
+        iconPosition="end"
+        icon={<ChevronDown />}
+        className="text-base min-w-46"
+      >
+        {selected || placeholder}
+      </Button>
 
       {isOpen && options.length > 0 && (
         <div className="absolute z-50 mt-2 w-full min-w-40 bg-white border border-gray-200 rounded-md shadow-lg text-xs sm:text-base">
-          {options.map(option => (
+          {options.map((option) => (
             <div
               key={option}
               onClick={() => handleSelect(option)}
@@ -61,7 +61,7 @@ const Dropdown: React.FC<DropdownProps> = ({
                 selected === option && 'bg-gray-100 font-medium'
               )}
             >
-              {option === "__ALL__" ? "All Locations" : option}
+              {option}
             </div>
           ))}
         </div>
