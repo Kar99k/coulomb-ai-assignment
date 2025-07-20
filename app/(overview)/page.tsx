@@ -1,7 +1,7 @@
 "use client"
 
 import ChartWidget from "@/components/templates/ChartWidget";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {CloudHailIcon, ThermometerIcon, WindIcon} from 'lucide-react'
 import { extractChartConfigByDailyMetric, multiSelectCountries } from "@/lib/utils";
 import { useRouter } from "next/navigation";
@@ -9,6 +9,7 @@ import Spinner from "@/components/atoms/Spinner";
 import { getAllMetricsbyParams } from "@/lib/api";
 import Dropdown from "@/components/atoms/DropDown";
 import DateRangeDropDown from "@/components/molecules/DateRangeDropDown";
+import MetricCard from "@/components/molecules/MetricCard";
 
 
 export default function Home() {
@@ -44,42 +45,55 @@ export default function Home() {
       router.push(`/detailedView?${params.toString()}`);
    }
 
-  useEffect(()=>{
-   
-   const fetchAllDailyMetrics = async () =>{
-         setIsLoading(true)
-         const { lat, lon,tz } = multiSelectCountries(locations);
+   const DAILY_METRICS = useMemo(() => [
+    "apparent_temperature_mean",
+    "temperature_2m_max",
+    "temperature_2m_min",
+    "precipitation_sum",
+    "wind_speed_10m_max"
+  ], []);
 
-          const result = await getAllMetricsbyParams({
-            lat,
-            lon,
-            start_date: dateRange.from,
-            end_date: dateRange.to,
-            timezone: tz,
-            dailyMetrics: [
-                "apparent_temperature_mean",
-                "temperature_2m_max",
-                "temperature_2m_min",
-                "precipitation_sum",
-                "wind_speed_10m_max"
-            ]
-            });
+  const METRIC_GROUP_MAP = useMemo(() => ({
+    Temperature: ['temperature_2m_max', 'temperature_2m_min', 'apparent_temperature_mean'],
+    Precipitation: ['precipitation_sum'],
+    WindSpeed: ['wind_speed_10m_max']
+  }), []);
 
-          const {TempChartConfig,PreciChartConfig,WindChartConfig} = extractChartConfigByDailyMetric(result, {
-            Temperature: ['temperature_2m_max','temperature_2m_min','apparent_temperature_mean'],
-            Precipitation: ['precipitation_sum'],
-            WindSpeed: ['wind_speed_10m_max']
-            });
-      
-         settempData(TempChartConfig)
-         setPreciData(PreciChartConfig)
-         setwindData(WindChartConfig)
-         setIsLoading(false)
+  const fetchAllDailyMetrics = useCallback(async () => {
+      if (!locations?.length || !dateRange?.from || !dateRange?.to) return;
+
+      try {
+        setIsLoading(true);
+        
+        const { lat, lon, tz } = multiSelectCountries(locations);
+
+        const result = await getAllMetricsbyParams({
+          lat,
+          lon,
+          start_date: dateRange.from,
+          end_date: dateRange.to,
+          timezone: tz,
+          dailyMetrics: DAILY_METRICS
+        });
+
+        const { TempChartConfig, PreciChartConfig, WindChartConfig } = extractChartConfigByDailyMetric(
+          result,
+          METRIC_GROUP_MAP
+        );
+
+        settempData(TempChartConfig);
+        setPreciData(PreciChartConfig);
+        setwindData(WindChartConfig);
+      } catch (err) {
+        console.error("Error fetching metrics:", err);
+      } finally {
+        setIsLoading(false);
       }
+    }, [locations, dateRange, DAILY_METRICS, METRIC_GROUP_MAP]);
 
-      fetchAllDailyMetrics()
-
-  },[locations,dateRange])
+    useEffect(() => {
+      fetchAllDailyMetrics();
+    }, [fetchAllDailyMetrics]);
   
   
   return (
@@ -108,44 +122,27 @@ export default function Home() {
       </div>
 
       <div className="grid grid-cols-1 gap-[24px] xl:grid-cols-2">
-        <div
-          className="bg-white p-4 md:p-6 cursor-pointer rounded-2xl border border-[#E9EFF5] backdrop-blur-2xl min-h-[486px]"
+        <MetricCard
+          title="Temperature"
+          icon={<ThermometerIcon width={24} height={24} />}
+          data={tempdata}
           onClick={() => handleRoute("temperature_2m")}
-        >
-          <div className="flex items-center gap-3">
-            <ThermometerIcon width={24} height={24} />
-            <div className="font-semibold text-xl">Temperature</div>
-          </div>
-          <div className="mt-6">
-            {tempdata && <ChartWidget data={tempdata} />}
-          </div>
-        </div>
+        />
 
-        <div
-          className="bg-white p-4 md:p-6 cursor-pointer rounded-2xl border border-[#E9EFF5] backdrop-blur-2xl min-h-[486px]"
+        <MetricCard
+          title="Precipitation"
+          icon={<CloudHailIcon width={24} height={24} />}
+          data={preciData}
           onClick={() => handleRoute("precipitation")}
-        >
-          <div className="flex items-center gap-3">
-            <CloudHailIcon width={24} height={24} />
-            <div className="font-semibold text-xl">Precipitation</div>
-          </div>
-          <div className="mt-6">
-            {preciData && <ChartWidget data={preciData} />}
-          </div>
-        </div>
+        />
 
-        <div
-          className="bg-white p-4 md:p-6 cursor-pointer rounded-2xl border border-[#E9EFF5] backdrop-blur-2xl min-h-[486px]"
+        <MetricCard
+          title="Wind Speed"
+          icon={<WindIcon width={24} height={24} />}
+          data={windData}
           onClick={() => handleRoute("wind_speed_10m")}
-        >
-          <div className="flex items-center gap-3">
-            <WindIcon width={24} height={24} />
-            <div className="font-semibold text-xl">Wind Speed</div>
-          </div>
-          <div className="mt-6">
-            {windData && <ChartWidget data={windData} />}
-          </div>
-        </div>
+        />
+        
       </div>
     </div>
   </div>
