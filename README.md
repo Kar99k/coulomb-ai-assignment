@@ -1,7 +1,14 @@
 # Coulomb AI Assignment
+### Description
 - It visualizes temperature, precipitation, and wind speed data for multiple countries
 - Users can select date ranges and locations to view daily and hourly weather metrics.
 - Interactive charts and a detailed view help analyze weather trends efficiently.
+### Tech Stack
+- **Framework**: Next.js  
+- **Lang**: TypeScript  
+- **Styling**: Tailwind CSS  
+- **Charts**: HighCharts  
+- **HTTP**: Axios / Fetch (abstracted in util)  
 
 Deployment : https://coulomb-ai-assignment.vercel.app/
 ## Getting Started
