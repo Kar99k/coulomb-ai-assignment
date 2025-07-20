@@ -7,6 +7,9 @@ const ChartWidget: React.FC<{data:TempLineChart | WindLineChart}> = ({data})=>{
         chart: {
             type: data.type
         },
+        accessibility: {
+            enabled: false,
+        },
          boost: {
             useGPUTranslations: true,
             usePreAllocated: true
@@ -32,7 +35,7 @@ const ChartWidget: React.FC<{data:TempLineChart | WindLineChart}> = ({data})=>{
         series: data?.series
     };
 
-    return <HighchartsReact highcharts={Highcharts} options={options}/>
+    return <HighchartsReact highcharts={Highcharts} options={options} containerProps={{ 'data-testid': 'chart-container' }}/>
 }
 
 export default ChartWidget
