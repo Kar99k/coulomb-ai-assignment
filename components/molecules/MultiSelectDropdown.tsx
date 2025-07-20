@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "../atoms/Button";
 import { ChevronDown } from "lucide-react";
 
@@ -18,6 +18,23 @@ export default function MultiSelectDropdown<T extends string>({
   getLabel = (val) => val
 }: MultiSelectDropdownProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleSelect = (value: T) => {
     const isSelected = selected.includes(value);
@@ -28,11 +45,16 @@ export default function MultiSelectDropdown<T extends string>({
     }
   };
 
-  const displayLabel = selected.map(getLabel).join(", ") || "Select up to 2";
+  const displayLabel = selected.map(getLabel).join(", ") || `Select up to ${maxSelect}`;
 
   return (
-    <div className="relative inline-block text-left">
-      <Button size="md" onClick={() => setIsOpen(!isOpen)} iconPosition="end" icon={<ChevronDown className="size-4"/>}>
+    <div ref={dropdownRef} className="relative inline-block text-left">
+      <Button
+        size="md"
+        onClick={() => setIsOpen(!isOpen)}
+        iconPosition="end"
+        icon={<ChevronDown className="size-4" />}
+      >
         <span className="truncate">{displayLabel}</span>
       </Button>
 
@@ -46,7 +68,9 @@ export default function MultiSelectDropdown<T extends string>({
                 key={option}
                 onClick={() => !disabled && handleSelect(option)}
                 className={`flex items-center px-4 py-2 text-sm cursor-pointer ${
-                  disabled ? "text-gray-400 cursor-not-allowed" : "text-gray-700 hover:bg-gray-100"
+                  disabled
+                    ? "text-gray-400 cursor-not-allowed"
+                    : "text-gray-700 hover:bg-gray-100"
                 }`}
               >
                 <input
