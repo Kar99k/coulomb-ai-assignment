@@ -1,7 +1,7 @@
 import Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
 
-const ChartWidget: React.FC<{data:TempLineChart | WindLineChart}> = ({data})=>{
+const ChartWidget: React.FC<{data:TempLineChart | WindLineChart | PreciBarChart}> = ({data})=>{
     
      const options = {
         chart: {

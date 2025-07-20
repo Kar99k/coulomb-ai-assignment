@@ -6,7 +6,7 @@ import ChartWidget from "@/components/templates/ChartWidget";
 type MetricCardProps = {
   title: string;
   icon: ReactNode;
-  data: any;
+  data:TempLineChart | WindLineChart | PreciBarChart | undefined;
   onClick: () => void;
 };
 
