@@ -55,7 +55,7 @@ const DateRangeDropdown: React.FC<Props> = ({ value, onChange }) => {
       </Button>
 
       {open && (
-        <div className="absolute z-50 mt-2 bg-white p-4 rounded-xl shadow-lg flex gap-4">
+        <div className="absolute z-50 mt-2 bg-white p-4 rounded-xl shadow-lg flex gap-4" role="calendar">
           <DayPicker
             mode="range"
             numberOfMonths={2}
