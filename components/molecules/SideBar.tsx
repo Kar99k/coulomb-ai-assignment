@@ -48,13 +48,14 @@ const SideBar: React.FC<{menuSelect:boolean, setMenuSelect: (val: boolean) => vo
       </aside>
 
       {menuSelect && (
-        <aside className="absolute z-10 md:hidden">
-          <nav className="flex flex-col p-4 gap-2 bg-white border border-[#E9EFF5] rounded-lg shadow-md">
+        <aside className="absolute z-10 md:hidden" ref={menuRef}>
+          <nav className="flex flex-col p-4 gap-2 bg-white border border-[#E9EFF5] rounded-lg shadow-md" >
             {menuItems.map(({ label, href }) => (
               <Link
                 key={label}
                 href={href}
                 className="px-4 py-2 rounded hover:bg-gray-100 text-sm"
+                 onClick={() => setMenuSelect(false)}
               >
                 {label}
               </Link>
