@@ -48,11 +48,12 @@ export default function MultiSelectDropdown<T extends string>({
   const displayLabel = selected.map(getLabel).join(", ") || `Select up to ${maxSelect}`;
 
   return (
-    <div ref={dropdownRef} className="relative inline-block text-left">
+    <div ref={dropdownRef} className="relative text-left min-w-40">
       <Button
-        size="md"
+        size="lg"
         onClick={() => setIsOpen(!isOpen)}
         iconPosition="end"
+        className="min-w-40"
         icon={<ChevronDown className="size-4" />}
       >
         <span className="truncate">{displayLabel}</span>

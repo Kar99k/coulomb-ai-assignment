@@ -89,12 +89,12 @@ export default function DetailedView() {
           </div>
         </div>
 
-        <div className="bg-white min-h-[332px] p-4 rounded-2xl border border-[#E9EFF5]">
+        <div className="bg-white min-h-[332px] px-4 py-3 rounded-2xl border border-[#E9EFF5]">
           <div className="flex items-center justify-between">
-            <div className="font-semibold text-xl">
+            <div className="font-semibold text-base">
               {metrics.map((metric) => METRICS_LABEL[metric]).join(", ")}
             </div>
-
+            
             <MultiSelectDropdown<AllowedMetrics>
               options={metricsOptions}
               selected={metrics}

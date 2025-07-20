@@ -1,8 +1,23 @@
 @import "tailwindcss";
 @import "react-day-picker/style.css";
 
+@media only screen and (min-width:720px) {
+    .rdp-months {
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+}
+}
+
 @theme {
     --color-foreground: #515151;
     --color-avatar: #FF9255;
     --color-background: #FAFAFA;
+    --color-primary:#00A7C4;
+    --color-accent:#ECF5F6;
 }
+
+.rdp-root {
+  --rdp-accent-color: var(--color-primary) !important;
+  --rdp-accent-background-color: var(--color-accent) !important;
+}
+
